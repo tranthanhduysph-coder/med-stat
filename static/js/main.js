@@ -418,3 +418,77 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
+const ethicsChatWindow = document.getElementById('ethics-chat-window');
+    const ethicsChatInput = document.getElementById('ethics-chat-input');
+    const ethicsChatSendBtn = document.getElementById('btn-send-ethics-chat');
+    const ethicsChatForm = document.getElementById('ethics-chat-form');
+
+    if (ethicsChatWindow && ethicsChatForm) { // Chỉ chạy nếu đang ở trang ethics.html
+        
+        ethicsChatForm.addEventListener('submit', (e) => {
+             e.preventDefault(); // Ngăn form gửi và tải lại trang
+             handleEthicsChatSend();
+        });
+
+        async function handleEthicsChatSend() {
+            const userQuery = ethicsChatInput.value.trim();
+            if (userQuery === "") return;
+
+            // Hiển thị tin nhắn của người dùng
+            ethicsChatWindow.innerHTML += `
+                <div class="flex justify-end">
+                    <div class="bg-blue-100 p-3 rounded-lg rounded-br-none shadow-sm max-w-[80%]">
+                        <p class="text-sm text-gray-800">${escapeHTML(userQuery)}</p>
+                    </div>
+                </div>`;
+            
+            ethicsChatInput.value = ""; // Xóa input
+            ethicsChatWindow.scrollTop = ethicsChatWindow.scrollHeight; // Cuộn xuống dưới
+
+            // Hiển thị "AI is typing..."
+            ethicsChatWindow.innerHTML += `
+                <div id="ai-ethics-typing" class="flex items-start space-x-3">
+                    <div class="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                        <i class='bx bxs-shield-check text-2xl text-white'></i>
+                    </div>
+                    <div class="bg-gray-200 p-3 rounded-lg rounded-tl-none shadow-sm">
+                        <p class="text-sm text-gray-500 italic">AI đang suy nghĩ...</p>
+                    </div>
+                </div>`;
+            ethicsChatWindow.scrollTop = ethicsChatWindow.scrollHeight;
+
+            // Gọi API backend (endpoint MỚI)
+            const response = await fetchFromBackend('/api/ethics_chat', { query: userQuery });
+
+            // Xóa "AI is typing..."
+            const typingIndicator = document.getElementById('ai-ethics-typing');
+            if (typingIndicator) typingIndicator.remove();
+
+            // Hiển thị câu trả lời của AI
+            let aiResponseHTML = `
+                <div class="flex items-start space-x-3">
+                    <div class="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                        <i class='bx bxs-shield-check text-2xl text-white'></i>
+                    </div>
+                    <div class="bg-gray-200 p-3 rounded-lg rounded-tl-none shadow-sm max-w-[80%]">
+                        <div class="ai-response text-sm text-gray-800">
+                            ${formatAIResponse(response.text || response.error)}
+                        </div>`;
+
+            if (response.sources && response.sources.length > 0) {
+                aiResponseHTML += '<div class="citation mt-3 pt-2 border-t border-gray-300">';
+                aiResponseHTML += '<strong class="text-xs text-gray-600">Nguồn tham khảo (từ Google Search):</strong><ul class="text-xs list-disc pl-4">';
+                response.sources.forEach(source => {
+                    aiResponseHTML += `<li><a href="${source.uri}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">${escapeHTML(source.title)}</a></li>`;
+                });
+                aiResponseHTML += '</ul></div>';
+            }
+            
+            aiResponseHTML += `</div></div>`;
+            ethicsChatWindow.innerHTML += aiResponseHTML;
+            ethicsChatWindow.scrollTop = ethicsChatWindow.scrollHeight;
+        }
+    }
+
+});

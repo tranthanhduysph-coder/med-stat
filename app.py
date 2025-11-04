@@ -165,6 +165,11 @@ def ai_tools():
 def ai_assistant():
     return render_template("assistant.html")
 
+@app.route("/ethics")
+def ethics():
+    """Trang Đạo đức Nghiên cứu."""
+    return render_template("ethics.html")
+
 # --- CÁC API ENDPOINT (ĐỂ JAVASCRIPT GỌI) ---
 
 @app.route("/api/quiz", methods=["POST"])
@@ -275,6 +280,22 @@ def api_assistant():
     response, status_code = _call_gemini_api(user_query, system_prompt, use_grounding=True)
     return jsonify(response), status_code
 
+@app.route("/api/ethics_chat", methods=["POST"])
+def api_ethics_chat():
+    """API Chatbot chuyên biệt về Đạo đức Nghiên cứu."""
+    data = request.json
+    user_query = data.get("query")
+    
+    # Prompt này rất quan trọng: nó giới hạn AI chỉ nói về đạo đức
+    system_prompt = """Bạn là một chuyên gia về Đạo đức Nghiên cứu Y học. Nhiệm vụ của bạn là chỉ trả lời các câu hỏi liên quan đến các nguyên tắc đạo đức, Tuyên ngôn Helsinki, Báo cáo Belmont, và các hướng dẫn của CIOMS.
+    
+    Nội dung Tuyên ngôn Helsinki đã được cung cấp trên trang. Bạn có thể sử dụng Google Search để tra cứu thêm thông tin chi tiết về các nguyên tắc đạo đức khác.
+    
+    Nếu người dùng hỏi về thống kê (p-value, t-test), SPSS, hay cách viết đề cương, hãy lịch sự từ chối và gợi ý họ dùng các trang 'Công cụ AI' hoặc 'Trợ lý AI' chung.
+    """
+    
+    response, status_code = _call_gemini_api(user_query, system_prompt, use_grounding=True)
+    return jsonify(response), status_code
 
 # --- KHỞI CHẠY SERVER ---
 if __name__ == "__main__":
