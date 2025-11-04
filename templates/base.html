@@ -3,18 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale-1.0">
-    <!-- Tiêu đề sẽ được chèn từ các trang con -->
-    <title>{% block title %}NCKH & Thống kê Y học{% endblock %} - ThS.BS. Trần Thanh Duy</title>
-    <!-- Tải Tailwind CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}NCKH & Thống kê Y học{% endblock %} - ThS. Trần Thanh Duy</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Tải Font Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Tải Icon Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <!-- Link đến file CSS/JS tĩnh (nếu có) -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
         body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
@@ -24,8 +19,20 @@
         ::-webkit-scrollbar-thumb:hover { background: #555; }
         .nav-link { @apply px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900; }
         .nav-link.active { @apply bg-blue-100 text-blue-700; }
+        .prose { @apply max-w-none text-gray-700; }
+        .prose h2 { @apply text-2xl font-semibold text-gray-800 mb-4 mt-6 border-b pb-2; }
+        .prose h3 { @apply text-xl font-semibold text-gray-700 mb-3 mt-5; }
+        .prose p { @apply mb-4 leading-relaxed; }
+        .prose ul { @apply list-disc list-outside pl-6 mb-4 space-y-2; }
+        .prose ol { @apply list-decimal list-outside pl-6 mb-4 space-y-2; }
+        .prose li { @apply mb-2; }
+        .prose a { @apply text-blue-600 hover:underline; }
+        .prose table { @apply w-full my-6 border-collapse border border-gray-300; }
+        .prose th { @apply bg-gray-100 border border-gray-300 px-4 py-2 text-left font-semibold; }
+        .prose td { @apply border border-gray-300 px-4 py-2; }
+        .prose strong { @apply font-semibold; }
+        .prose code { @apply bg-gray-200 text-sm font-mono px-1 py-0.5 rounded; }
         
-        /* Spinner (biểu tượng tải) */
         #loading-spinner {
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
@@ -36,7 +43,6 @@
         }
         @keyframes spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
 
-        /* Styling cho nội dung từ AI */
         .ai-response { font-size: 1rem; line-height: 1.6; }
         .ai-response h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.25rem; }
         .ai-response ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; }
@@ -49,23 +55,29 @@
         .ai-response .citation { font-size: 0.875rem; color: #6b7280; margin-top: 1rem; border-top: 1px dashed #e5e7eb; padding-top: 0.5rem; }
         .ai-response .citation a { color: #3b82f6; text-decoration: none; }
         .ai-response .citation a:hover { text-decoration: underline; }
+        .hidden { display: none; }
+        .loader {
+            border-top-color: #3498db;
+            animation: spinner 1.5s linear infinite;
+        }
+        @keyframes spinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 
 <body class="h-full flex flex-col">
     <div id="loading-spinner"></div>
 
-    <!-- Header -->
     <header class="bg-white shadow-md sticky top-0 z-50">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
                 <a href="/" class="flex items-center space-x-2 flex-shrink-0">
                     <i class='bx bxs-brain text-3xl text-blue-600'></i>
                     <span class="text-xl font-bold text-gray-800 hidden sm:block">NCKH Y học (AI)</span>
                 </a>
                 
-                <!-- Navigation Links -->
                 <div class="flex items-center space-x-2 md:space-x-4">
                     {% set active_page = request.endpoint %}
                     <a href="/" class="nav-link {% if active_page == 'home' %}active{% endif %}">
@@ -85,13 +97,10 @@
         </nav>
     </header>
 
-    <!-- Main Content -->
     <main class="flex-grow">
-        <!-- Nội dung của trang con sẽ được chèn vào đây -->
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
     <footer class="bg-white mt-12 border-t border-gray-200">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-500">
             <p class="text-sm">
@@ -103,8 +112,7 @@
         </div>
     </footer>
 
-    <!-- Modal Miễn trừ Trách nhiệm -->
-    <div id="disclaimer-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50 p-4" style="display: none;">
+    <div id="disclaimer-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50 p-4 hidden">
         <div class="bg-white rounded-lg shadow-xl max-w-lg w-full p-6 md:p-8 relative">
             <button id="close-disclaimer-btn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
                 <i class='bx bx-x text-2xl'></i>
@@ -121,34 +129,38 @@
         </div>
     </div>
     
-    <!-- Modal Tự Lượng Giá (Quiz) -->
-    <div id="quiz-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50 p-4" style="display: none;">
-        <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] flex flex-col">
-            <!-- Header -->
-            <div class="flex justify-between items-center p-5 border-b border-gray-200">
-                <h3 id="quiz-title" class="text-xl font-bold text-gray-800">Bài lượng giá</h3>
-                <button id="close-quiz-btn" class="text-gray-400 hover:text-gray-600">
-                    <i class='bx bx-x text-3xl'></i>
-                </button>
+    <div id="quiz-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col">
+            
+            <div class="flex justify-between items-center p-5 border-b">
+                <h3 id="quiz-title" class="text-2xl font-semibold text-gray-800">Bài lượng giá</h3>
+                <button id="close-quiz-btn" class="text-gray-400 hover:text-gray-600 text-3xl font-bold">&times;</button>
             </div>
-            <!-- Body -->
-            <div id="quiz-body" class="p-6 overflow-y-auto">
-                <div id="quiz-questions-container" class="space-y-6"></div>
-                <div id="quiz-results-container" class="ai-response" style="display: none;"></div>
+            
+            <div id="quiz-body" class="p-6 overflow-y-auto space-y-6">
+                
+                <div id="quiz-loading" class="text-center py-10 flex flex-col items-center">
+                    <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
+                    <p class="text-lg text-gray-600">AI đang tạo 20 câu hỏi, vui lòng chờ...</p>
+                </div>
+                
+                <form id="quiz-form" class="hidden space-y-5"></form>
+
+                <div id="quiz-results" class="hidden">
+                    <h4 class="text-2xl font-bold text-center mb-4" id="quiz-score"></h4>
+                    <p class="text-center text-lg text-gray-700 mb-6" id="quiz-summary"></p>
+                    <div id="quiz-review" class="space-y-4 max-h-64 overflow-y-auto pr-2">
+                    </div>
+                </div>
             </div>
-            <!-- Footer -->
-            <div class="p-5 border-t border-gray-200 bg-gray-50 rounded-b-lg">
-                <button id="quiz-submit-btn" class="w-full bg-green-600 text-white font-medium py-3 px-6 rounded-lg shadow-md hover:bg-green-700">
-                    <i class='bx bxs-check-circle mr-2'></i> Nộp bài
-                </button>
-                 <button id="quiz-close-results-btn" class="w-full bg-gray-500 text-white font-medium py-3 px-6 rounded-lg shadow-md hover:bg-gray-600 mt-2" style="display: none;">
-                    Đóng lại
-                </button>
+            
+            <div class="p-5 border-t flex justify-end space-x-4">
+                <button id="submit-quiz-btn" type="button" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300 hidden">Nộp bài</button>
+                <button id="retake-quiz-btn" type="button" class="bg-gray-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-600 transition duration-300 hidden">Làm lại</button>
             </div>
         </div>
     </div>
 
-    <!-- Tải file JS chính -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
