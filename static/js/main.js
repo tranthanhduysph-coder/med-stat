@@ -416,18 +416,16 @@ document.addEventListener('DOMContentLoaded', () => {
             chatWindow.scrollTop = chatWindow.scrollHeight;
         }
     }
-
-});
-
-const ethicsChatWindow = document.getElementById('ethics-chat-window');
+    
+    const ethicsChatWindow = document.getElementById('ethics-chat-window');
     const ethicsChatInput = document.getElementById('ethics-chat-input');
     const ethicsChatSendBtn = document.getElementById('btn-send-ethics-chat');
     const ethicsChatForm = document.getElementById('ethics-chat-form');
 
-    if (ethicsChatWindow && ethicsChatForm) { // Chỉ chạy nếu đang ở trang ethics.html
+    if (ethicsChatWindow && ethicsChatForm) {
         
         ethicsChatForm.addEventListener('submit', (e) => {
-             e.preventDefault(); // Ngăn form gửi và tải lại trang
+             e.preventDefault();
              handleEthicsChatSend();
         });
 
@@ -435,7 +433,6 @@ const ethicsChatWindow = document.getElementById('ethics-chat-window');
             const userQuery = ethicsChatInput.value.trim();
             if (userQuery === "") return;
 
-            // Hiển thị tin nhắn của người dùng
             ethicsChatWindow.innerHTML += `
                 <div class="flex justify-end">
                     <div class="bg-blue-100 p-3 rounded-lg rounded-br-none shadow-sm max-w-[80%]">
@@ -443,10 +440,9 @@ const ethicsChatWindow = document.getElementById('ethics-chat-window');
                     </div>
                 </div>`;
             
-            ethicsChatInput.value = ""; // Xóa input
-            ethicsChatWindow.scrollTop = ethicsChatWindow.scrollHeight; // Cuộn xuống dưới
+            ethicsChatInput.value = "";
+            ethicsChatWindow.scrollTop = ethicsChatWindow.scrollHeight;
 
-            // Hiển thị "AI is typing..."
             ethicsChatWindow.innerHTML += `
                 <div id="ai-ethics-typing" class="flex items-start space-x-3">
                     <div class="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
@@ -458,14 +454,11 @@ const ethicsChatWindow = document.getElementById('ethics-chat-window');
                 </div>`;
             ethicsChatWindow.scrollTop = ethicsChatWindow.scrollHeight;
 
-            // Gọi API backend (endpoint MỚI)
             const response = await fetchFromBackend('/api/ethics_chat', { query: userQuery });
 
-            // Xóa "AI is typing..."
             const typingIndicator = document.getElementById('ai-ethics-typing');
             if (typingIndicator) typingIndicator.remove();
 
-            // Hiển thị câu trả lời của AI
             let aiResponseHTML = `
                 <div class="flex items-start space-x-3">
                     <div class="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
@@ -492,3 +485,4 @@ const ethicsChatWindow = document.getElementById('ethics-chat-window');
     }
 
 });
+
