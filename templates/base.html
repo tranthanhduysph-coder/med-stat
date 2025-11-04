@@ -64,6 +64,26 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        @media print {
+            header, footer, #proposal-ai-response, .btn-proposal-ai, #print-proposal-btn, #open-disclaimer-btn {
+                display: none !important;
+            }
+            body { background-color: #ffffff; }
+            main { width: 100%; margin: 0; padding: 0; }
+            .lg\:grid { display: block; }
+            .lg\:col-span-2 { width: 100%; }
+            .lg\:col-span-1 { display: none; }
+            textarea {
+                border: 1px solid #ccc !important;
+                background-color: #fdfdfd !important;
+                color: #000 !important;
+                overflow: visible; 
+                height: auto; 
+            }
+            .bg-white { box-shadow: none !important; border: none !important; }
+        }
+
     </style>
 </head>
 

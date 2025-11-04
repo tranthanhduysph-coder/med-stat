@@ -169,10 +169,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     reviewHtml += `
                         <div class="p-3 bg-red-50 border border-red-200 rounded-lg">
-                            <p class="font-semibold text-red-800">Câu ${index + 1}: ${escapeHTML(question.question)}</p>
+                            <p class="font-semibold text-red-800">Câu ${index + 1}: ${escapeHTML(q.question)}</p>
                             <p class="text-sm text-gray-700 mt-1">${userAnswerText}</p>
                             <p class="text-sm text-green-700 font-medium mt-1">Đáp án đúng: "${escapeHTML(correctAnswerText)}"</p>
-                            <p class="text-sm text-gray-600 mt-1"><em>Giải thích: ${escapeHTML(question.explanation)}</em></p>
+                            <p class="text-sm text-gray-600 mt-1"><em>Giải thích: ${escapeHTML(q.explanation)}</em></p>
                         </div>
                     `;
                 }
@@ -249,6 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     general: document.getElementById('proposal-general').value,
                     specific: document.getElementById('proposal-specific').value,
                     methods: document.getElementById('proposal-methods').value,
+                    variables: document.getElementById('proposal-variables').value,
                     sample: document.getElementById('proposal-sample').value,
                     analysis: document.getElementById('proposal-analysis').value,
                     ethics: document.getElementById('proposal-ethics').value,
@@ -267,6 +268,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         });
+
+        const printBtn = document.getElementById('print-proposal-btn');
+        if (printBtn) {
+            printBtn.addEventListener('click', () => {
+                window.print();
+            });
+        }
     }
 
     const toolTabs = document.querySelectorAll('.tool-tab-button');
