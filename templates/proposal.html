@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %}AI Tạo Đề cương{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+    <div class="bg-white p-6 md:p-8 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">Trình Tạo Đề cương NCKH (với AI)</h2>
+        <p class="text-gray-700 mb-6">Hãy điền vào các mục dưới đây theo trình tự. Bạn có thể nhấn nút "Gợi ý AI" ở mỗi bước để AI hỗ trợ bạn dựa trên nội dung các chương liên quan.</p>
+        
+        <div class="space-y-6">
+            <!-- Bước 1: Tên đề tài -->
+            <div>
+                <label for="proposal-title" class="block text-sm font-medium text-gray-700">1. Tên đề tài (Title)</label>
+                <textarea id="proposal-title" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Ví dụ: Tỷ lệ và yếu tố liên quan đến thiếu máu ở phụ nữ mang thai tại..."></textarea>
+                <button data-step="proposal-title" class="btn-proposal-ai mt-2 text-sm text-blue-600 hover:text-blue-800 font-medium"><i class='bx bxs-magic-wand mr-1'></i> AI giúp tôi tinh chỉnh Tên đề tài</button>
+            </div>
+            
+            <!-- Bước 2: Đặt vấn đề -->
+            <div>
+                <label for="proposal-problem" class="block text-sm font-medium text-gray-700">2. Đặt vấn đề / Tính cấp thiết (Problem Statement)</label>
+                <textarea id="proposal-problem" rows="5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Trình bày theo cấu trúc 3 đoạn: Bối cảnh (vấn đề chung), Khoảng trống (chưa ai làm), Tính cấp thiết (lý do làm đề tài này)."></textarea>
+                <button data-step="proposal-problem" class="btn-proposal-ai mt-2 text-sm text-blue-600 hover:text-blue-800 font-medium"><i class='bx bxs-magic-wand mr-1'></i> AI góp ý phần Đặt vấn đề (Chương 2)</button>
+            </div>
+
+            <!-- Bước 3: Tổng quan tài liệu -->
+            <div>
+                <label for="proposal-lit-review" class="block text-sm font-medium text-gray-700">3. Tổng quan tài liệu (Sơ lược)</label>
+                <textarea id="proposal-lit-review" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Trình bày ngắn gọn các nghiên cứu trước đây đã tìm thấy gì? Còn gì chưa rõ?"></textarea>
+                <button data-step="proposal-lit-review" class="btn-proposal-ai mt-2 text-sm text-blue-600 hover:text-blue-800 font-medium"><i class='bx bxs-magic-wand mr-1'></i> AI tìm kiếm và tóm tắt Tổng quan</button>
+            </div>
+
+            <!-- Bước 4: Mục tiêu tổng quát -->
+            <div>
+                <label for="proposal-general" class="block text-sm font-medium text-gray-700">4. Mục tiêu Tổng quát</label>
+                <textarea id="proposal-general" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Ví dụ: Xác định tỷ lệ và các yếu tố liên quan đến..."></textarea>
+                <button data-step="proposal-general" class="btn-proposal-ai mt-2 text-sm text-blue-600 hover:text-blue-800 font-medium"><i class='bx bxs-magic-wand mr-1'></i> Gợi ý từ "Đặt vấn đề"</button>
+            </div>
+
+            <!-- Bước 5: Mục tiêu cụ thể -->
+            <div>
+                <label for="proposal-specific" class="block text-sm font-medium text-gray-700">5. Mục tiêu Cụ thể (SMART)</label>
+                <textarea id="proposal-specific" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Ví dụ: 1. Xác định tỷ lệ... 2. Phân tích mối liên quan giữa..."></textarea>
+                <button data-step="proposal-specific" class="btn-proposal-ai mt-2 text-sm text-blue-600 hover:text-blue-800 font-medium"><i class='bx bxs-magic-wand mr-1'></i> Gợi ý từ "Mục tiêu tổng quát"</button>
+            </div>
+
+            <!-- Bước 6: Đối tượng và Phương pháp -->
+            <div>
+                <label for="proposal-methods" class="block text-sm font-medium text-gray-700">6. Đối tượng và Phương pháp Nghiên cứu</label>
+                <textarea id="proposal-methods" rows="5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Bao gồm: Thiết kế nghiên cứu (ví dụ: Mô tả cắt ngang), Đối tượng, Tiêu chuẩn chọn/loại trừ, Địa điểm, Thời gian..."></textarea>
+                <button data-step="proposal-methods" class="btn-proposal-ai mt-2 text-sm text-blue-600 hover:text-blue-800 font-medium"><i class='bx bxs-magic-wand mr-1'></i> Gợi ý Thiết kế NCKH (Chương 3)</button>
+            </div>
+
+            <!-- Bước 7: Cỡ mẫu -->
+            <div>
+                <label for="proposal-sample" class="block text-sm font-medium text-gray-700">7. Cỡ mẫu và Phương pháp chọn mẫu</label>
+                <textarea id="proposal-sample" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Trình bày công thức tính cỡ mẫu (ví dụ: công thức ước lượng 1 tỷ lệ) và cách chọn mẫu (ví dụ: ngẫu nhiên hệ thống)."></textarea>
+                <button data-step="proposal-sample" class="btn-proposal-ai mt-2 text-sm text-blue-600 hover:text-blue-800 font-medium"><i class='bx bxs-magic-wand mr-1'></i> AI gợi ý công thức (Chương 3)</button>
+            </div>
+
+            <!-- Bước 8: Phân tích thống kê -->
+            <div>
+                <label for="proposal-analysis" class="block text-sm font-medium text-gray-700">8. Phương pháp Phân tích Thống kê</label>
+                <textarea id="proposal-analysis" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Ví dụ: Dữ liệu được xử lý bằng SPSS 27. Sử dụng thống kê mô tả (tần số, tỷ lệ, trung bình, SD). Kiểm định Chi-square, t-test..."></textarea>
+                <button data-step="proposal-analysis" class="btn-proposal-ai mt-2 text-sm text-blue-600 hover:text-blue-800 font-medium"><i class='bx bxs-magic-wand mr-1'></i> Gợi ý phép kiểm định (Chương 11)</button>
+            </div>
+
+            <!-- Bước 9: Đạo đức nghiên cứu -->
+            <div>
+                <label for="proposal-ethics" class="block text-sm font-medium text-gray-700">9. Đạo đức Nghiên cứu</label>
+                <textarea id="proposal-ethics" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Ví dụ: Đề cương đã được Hội đồng Đạo đức... thông qua. Đối tượng được giải thích và ký cam kết tự nguyện..."></textarea>
+                <button data-step="proposal-ethics" class="btn-proposal-ai mt-2 text-sm text-blue-600 hover:text-blue-800 font-medium"><i class='bx bxs-magic-wand mr-1'></i> AI gợi ý nội dung (Chương 6)</button>
+            </div>
+
+            <!-- Bước 10: Tài liệu tham khảo -->
+            <div>
+                <label for="proposal-references" class="block text-sm font-medium text-gray-700">10. Tài liệu Tham khảo (Sơ lược)</label>
+                <textarea id="proposal-references" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Liệt kê 3-5 tài liệu tham khảo chính, định dạng theo chuẩn (ví dụ: Vancouver, APA)."></textarea>
+                <button data-step="proposal-references" class="btn-proposal-ai mt-2 text-sm text-blue-600 hover:text-blue-800 font-medium"><i class='bx bxs-magic-wand mr-1'></i> AI định dạng TLTK</button>
+            </div>
+
+        </div>
+        
+        <!-- Vùng hiển thị kết quả AI cho Đề cương -->
+        <div id="proposal-ai-response" class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg ai-response" style="display: none;">
+             <p class="text-gray-500">Gợi ý của AI sẽ xuất hiện ở đây...</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

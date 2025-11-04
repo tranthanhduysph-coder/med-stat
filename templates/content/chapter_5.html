@@ -1,0 +1,67 @@
+<h2>5.1. Vai trò của Phân tích Số liệu</h2>
+<p>Phân tích số liệu (Data Analysis) là quá trình sử dụng các công cụ thống kê để mô tả, so sánh, và rút ra kết luận từ dữ liệu. Mục đích là biến dữ liệu thô (raw data) thành thông tin có ý nghĩa (tri thức) để trả lời câu hỏi nghiên cứu.</p>
+
+<h2>5.2. Quy trình Xử lý và Phân tích Dữ liệu</h2>
+<p>Quy trình chuẩn trong nghiên cứu y học thường bao gồm 5 bước:</p>
+<ol>
+    <li><strong>Thu thập dữ liệu:</strong> Từ bảng câu hỏi, bệnh án...</li>
+    <li><strong>Làm sạch dữ liệu (Data Cleaning):</strong> (Xem Chương 8) Phát hiện và sửa lỗi, giá trị ngoại lai, giá trị thiếu. Đây là bước quan trọng nhất.</li>
+    <li><strong>Mã hóa biến (Data Encoding):</strong> (Xem Chương 7) Chuyển đổi dữ liệu (ví dụ: "Nam" thành 1, "Nữ" thành 2).</li>
+    <li><strong>Thống kê Mô tả (Descriptive Statistics):</strong> (Xem Chương 10) Tóm tắt và mô tả đặc điểm của mẫu.</li>
+    <li><strong>Thống kê Suy luận (Inferential Statistics):</strong> (Xem Chương 11) Kiểm định giả thuyết và rút ra kết luận cho quần thể.</li>
+</ol>
+
+<h2>5.3. Thống kê Mô tả (Descriptive Statistics)</h2>
+<p>Thống kê mô tả nhằm tóm tắt đặc điểm của tập dữ liệu. Việc lựa chọn chỉ số mô tả phụ thuộc vào loại biến và phân phối dữ liệu.</p>
+<table>
+    <thead>
+        <tr>
+            <th>Loại biến</th>
+            <th>Phân phối</th>
+            <th>Chỉ số Trung tâm</th>
+            <th>Chỉ số Phân tán</th>
+            <th>Cách trình bày (Ví dụ)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Định tính</strong> (Nominal/Ordinal)</td>
+            <td>-</td>
+            <td>Tần suất (n)</td>
+            <td>Tỷ lệ (%)</td>
+            <td>Nam giới: 190 (54.3%)</td>
+        </tr>
+        <tr>
+            <td><strong>Định lượng</strong> (Scale)</td>
+            <td><strong>Chuẩn</strong></td>
+            <td>Trung bình (Mean)</td>
+            <td>Độ lệch chuẩn (SD)</td>
+            <td>Tuổi: 28.4 ± 6.2 (năm)</td>
+        </tr>
+        <tr>
+            <td><strong>Định lượng</strong> (Scale)</td>
+            <td><strong>Không chuẩn</strong></td>
+            <td>Trung vị (Median)</td>
+            <td>Khoảng Tứ phân vị (IQR)</td>
+            <td>Hb: 11.2 (IQR: 10.3-12.4) g/dL</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>5.4. Trình bày Dữ liệu bằng Bảng</h2>
+<ul>
+    <li>Bảng phải có số thứ tự và tiêu đề rõ ràng (nêu rõ nội dung, địa điểm, thời gian).</li>
+    <li>Đơn vị đo lường phải được ghi rõ (ví dụ: "Tuổi (năm)", "Tỷ lệ (%)").</li>
+    <li>Trình bày số liệu nhất quán (làm tròn 1 hoặc 2 chữ số thập phân).</li>
+    <li>Luôn ghi tổng số (N) và các giá trị (n, %).</li>
+</ul>
+
+<h2>5.5. Trình bày Dữ liệu bằng Biểu đồ</h2>
+<p>Biểu đồ giúp minh họa trực quan xu hướng dữ liệu. Việc chọn biểu đồ phụ thuộc vào mục tiêu và loại biến.</p>
+<ul>
+    <li><strong>Biểu đồ Cột (Bar chart):</strong> Dùng để so sánh tần suất hoặc trung bình giữa các nhóm <strong>định tính</strong> (Ví dụ: Tỷ lệ thiếu máu theo 3 nhóm tuổi).</li>
+    <li><strong>Biểu đồ Tròn (Pie chart):</strong> Dùng để thể hiện tỷ lệ phần trăm của các thành phần trong một tổng thể (Ví dụ: Phân bố giới tính (Nam/Nữ) trong mẫu). (Lưu ý: Hạn chế dùng khi có quá 5 nhóm).</li>
+    <li><strong>Histogram:</strong> Dùng để kiểm tra hình dạng phân phối (chuẩn hay không chuẩn) của một biến <strong>định lượng</strong> (Ví dụ: Phân bố của biến Tuổi, biến Hb).</li>
+    <li><strong>Biểu đồ Hộp (Boxplot):</strong> Dùng để mô tả phân bố của biến <strong>định lượng</strong> và phát hiện các giá trị ngoại lai (outlier). Rất hữu ích khi so sánh phân bố giữa nhiều nhóm (Ví dụ: So sánh phân bố Hb giữa nhóm Nam và Nữ).</li>
+    <li><strong>Biểu đồ Đường (Line chart):</strong> Dùng để thể hiện xu hướng của một biến theo thời gian (Ví dụ: Tỷ lệ nhiễm bệnh qua các năm).</li>
+</ul>

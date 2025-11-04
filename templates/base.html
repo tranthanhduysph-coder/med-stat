@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full bg-gray-100">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <!-- Tiêu đề sẽ được chèn từ các trang con -->
+    <title>{% block title %}NCKH & Thống kê Y học{% endblock %} - ThS.BS. Trần Thanh Duy</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tải Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tải Icon Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Link đến file CSS/JS tĩnh (nếu có) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+        .nav-link { @apply px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900; }
+        .nav-link.active { @apply bg-blue-100 text-blue-700; }
+        
+        /* Spinner (biểu tượng tải) */
+        #loading-spinner {
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            border: 4px solid #f3f3f3; border-top: 4px solid #3b82f6;
+            border-radius: 50%; width: 40px; height: 40px;
+            animation: spin 1s linear infinite; z-index: 1000;
+            display: none;
+        }
+        @keyframes spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        /* Styling cho nội dung từ AI */
+        .ai-response { font-size: 1rem; line-height: 1.6; }
+        .ai-response h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.25rem; }
+        .ai-response ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; }
+        .ai-response li { margin-bottom: 0.25rem; }
+        .ai-response p { margin-bottom: 1rem; }
+        .ai-response code { background-color: #f3f4f6; padding: 0.125rem 0.25rem; border-radius: 0.25rem; font-family: monospace; }
+        .ai-response pre { background-color: #f3f4f6; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin-bottom: 1rem; }
+        .ai-response strong { font-weight: 600; }
+        .ai-response blockquote { border-left: 4px solid #d1d5db; padding-left: 1rem; margin-left: 0; font-style: italic; color: #4b5563; }
+        .ai-response .citation { font-size: 0.875rem; color: #6b7280; margin-top: 1rem; border-top: 1px dashed #e5e7eb; padding-top: 0.5rem; }
+        .ai-response .citation a { color: #3b82f6; text-decoration: none; }
+        .ai-response .citation a:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body class="h-full flex flex-col">
+    <div id="loading-spinner"></div>
+
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <a href="/" class="flex items-center space-x-2 flex-shrink-0">
+                    <i class='bx bxs-brain text-3xl text-blue-600'></i>
+                    <span class="text-xl font-bold text-gray-800 hidden sm:block">NCKH Y học (AI)</span>
+                </a>
+                
+                <!-- Navigation Links -->
+                <div class="flex items-center space-x-2 md:space-x-4">
+                    {% set active_page = request.endpoint %}
+                    <a href="/" class="nav-link {% if active_page == 'home' %}active{% endif %}">
+                        <i class='bx bxs-book-open sm:mr-2'></i> <span class="hidden sm:inline">Module Học tập</span>
+                    </a>
+                    <a href="/proposal-builder" class="nav-link {% if active_page == 'proposal_builder' %}active{% endif %}">
+                        <i class='bx bxs-edit-alt sm:mr-2'></i> <span class="hidden sm:inline">Tạo Đề cương</span>
+                    </a>
+                    <a href="/ai-tools" class="nav-link {% if active_page == 'ai_tools' %}active{% endif %}">
+                        <i class='bx bxs-wrench sm:mr-2'></i> <span class="hidden sm:inline">Công cụ AI</span>
+                    </a>
+                    <a href="/ai-assistant" class="nav-link {% if active_page == 'ai_assistant' %}active{% endif %}">
+                        <i class='bx bxs-conversation sm:mr-2'></i> <span class="hidden sm:inline">Trợ lý AI</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        <!-- Nội dung của trang con sẽ được chèn vào đây -->
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white mt-12 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-500">
+            <p class="text-sm">
+                Phát triển bởi <span class="font-medium text-gray-700">ThS.BS. Trần Thanh Duy</span> | Email: <a href="mailto:ttduy@sgu.edu.vn" class="text-blue-600 hover:underline">ttduy@sgu.edu.vn</a>
+            </p>
+            <p class="text-sm mt-1">
+                Trang web này sử dụng AI tạo sinh. <button id="open-disclaimer-btn" class="text-blue-600 hover:underline font-medium">Xem Cảnh báo & Miễn trừ trách nhiệm</button>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Modal Miễn trừ Trách nhiệm -->
+    <div id="disclaimer-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50 p-4" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl max-w-lg w-full p-6 md:p-8 relative">
+            <button id="close-disclaimer-btn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <i class='bx bx-x text-2xl'></i>
+            </button>
+            <div class="flex items-center space-x-3 mb-4">
+                <i class='bx bxs-error-triangle text-3xl text-yellow-500'></i>
+                <h3 class="text-xl font-bold text-gray-800">Cảnh báo & Miễn trừ Trách nhiệm</h3>
+            </div>
+            <div class="text-sm text-gray-700 space-y-3">
+                <p>Nền tảng này sử dụng mô hình ngôn ngữ lớn (AI) để cung cấp các gợi ý và phản hồi. Các thông tin do AI tạo ra chỉ mang tính chất tham khảo, hỗ trợ học tập và không thể thay thế cho kiến thức chuyên môn, sự phán đoán của giảng viên hoặc các hướng dẫn học thuật chính thức.</p>
+                <p>Người biên soạn (<span class="font-medium">Trần Thanh Duy</span>) không chịu trách nhiệm về bất kỳ sự sai lệch, thiếu sót, hoặc hậu quả nào phát sinh từ việc sử dụng các thông tin do AI cung cấp.</p>
+                <p class="font-medium">Người dùng có trách nhiệm tự kiểm tra, đối chiếu và chịu trách nhiệm cuối cùng cho sản phẩm học thuật (đề cương, bài báo...) của mình. Luôn luôn tham khảo ý kiến của giảng viên hướng dẫn.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Tự Lượng Giá (Quiz) -->
+    <div id="quiz-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50 p-4" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] flex flex-col">
+            <!-- Header -->
+            <div class="flex justify-between items-center p-5 border-b border-gray-200">
+                <h3 id="quiz-title" class="text-xl font-bold text-gray-800">Bài lượng giá</h3>
+                <button id="close-quiz-btn" class="text-gray-400 hover:text-gray-600">
+                    <i class='bx bx-x text-3xl'></i>
+                </button>
+            </div>
+            <!-- Body -->
+            <div id="quiz-body" class="p-6 overflow-y-auto">
+                <div id="quiz-questions-container" class="space-y-6"></div>
+                <div id="quiz-results-container" class="ai-response" style="display: none;"></div>
+            </div>
+            <!-- Footer -->
+            <div class="p-5 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+                <button id="quiz-submit-btn" class="w-full bg-green-600 text-white font-medium py-3 px-6 rounded-lg shadow-md hover:bg-green-700">
+                    <i class='bx bxs-check-circle mr-2'></i> Nộp bài
+                </button>
+                 <button id="quiz-close-results-btn" class="w-full bg-gray-500 text-white font-medium py-3 px-6 rounded-lg shadow-md hover:bg-gray-600 mt-2" style="display: none;">
+                    Đóng lại
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tải file JS chính -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

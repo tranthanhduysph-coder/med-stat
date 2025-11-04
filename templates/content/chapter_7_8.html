@@ -1,0 +1,66 @@
+<h2>7.1. Giới thiệu phần mềm SPSS</h2>
+<p>SPSS (Statistical Package for the Social Sciences) là phần mềm thống kê phổ biến nhất trong nghiên cứu y học, tâm lý học và khoa học xã hội nhờ giao diện trực quan, thân thiện, không yêu cầu người dùng biết lập trình.</p>
+
+<h2>7.2. Giao diện làm việc của SPSS</h2>
+<p>Khi mở SPSS, có 2 cửa sổ (Tab) chính ở góc dưới bên trái mà bạn phải luôn phân biệt:</p>
+<ol>
+    <li><strong>Data View (Cửa sổ Dữ liệu):</strong> Dùng để <strong>nhập dữ liệu</strong>.
+        <ul>
+            <li>Mỗi <strong>hàng (row)</strong> là một đối tượng nghiên cứu (ví dụ: 1 bệnh nhân).</li>
+            <li>Mỗi <strong>cột (column)</strong> là một biến số (ví dụ: Tuổi, Giới tính).</li>
+        </ul>
+    </li>
+    <li><strong>Variable View (Cửa sổ Biến):</strong> Dùng để <strong>định nghĩa (tạo khung)</strong> cho các biến. Đây là bước đầu tiên và quan trọng nhất.
+        <ul>
+            <li>Mỗi <strong>hàng</strong> là một biến số.</li>
+            <li>Mỗi <strong>cột</strong> là một thuộc tính của biến đó.</li>
+        </ul>
+    </li>
+</ol>
+<p>Quy trình chuẩn: Luôn thiết lập <strong>Variable View</strong> trước, sau đó mới chuyển sang <strong>Data View</strong> để nhập liệu.</p>
+
+<h2>7.3. Định nghĩa Biến trong Variable View</h2>
+<p>Đây là các thuộc tính quan trọng nhất bạn cần khai báo cho mỗi biến:</p>
+<ul>
+    <li><strong>Name (Tên biến):</strong> Tên viết liền, không dấu, không ký tự đặc biệt, không bắt đầu bằng số. (Ví dụ: <code>Tuoi</code>, <code>GioiTinh</code>, <code>Hb</code>).</li>
+    <li><strong>Type (Loại dữ liệu):</strong> Thường là <code>Numeric</code> (ngay cả khi mã hóa Nam/Nữ) hoặc <code>String</code> (nếu là văn bản như "Họ tên"). Nên dùng <code>Numeric</code>.</li>
+    <li><strong>Width / Decimals:</strong> Độ rộng và số chữ số thập phân (Ví dụ: <code>Decimals = 1</code> cho biến Hb 10.2).</li>
+    <li><strong>Label (Nhãn biến):</strong> Mô tả đầy đủ, có dấu, rõ ràng cho biến. (Ví dụ: "Tuổi của phụ nữ mang thai (năm)").</li>
+    <li><strong>Values (Mã hóa giá trị):</strong> Chỉ dùng cho biến <strong>định tính</strong>. Đây là nơi bạn gán nhãn cho các con số.
+        <ul>
+            <li>Ví dụ: <code>Value = 1</code>, <code>Label = "Nam"</code> → Add. <code>Value = 2</code>, <code>Label = "Nữ"</code> → Add.</li>
+        </ul>
+    </li>
+    <li><strong>Measure (Thang đo):</strong> Rất quan trọng, quyết định phép kiểm định. (Dựa trên Chương 4)
+        <ul>
+            <li><code>Nominal</code> (Danh nghĩa): Ví dụ: Giới tính, Nghề nghiệp.</li>
+            <li><code>Ordinal</code> (Thứ bậc): Ví dụ: Mức độ đau (Nhẹ, Vừa, Nặng).</li>
+            <li><code>Scale</code> (Khoảng/Tỷ lệ): Ví dụ: Tuổi, Cân nặng, Hb.</li>
+        </ul>
+    </li>
+</ul>
+
+<h2>8.1. Làm sạch Dữ liệu (Data Cleaning)</h2>
+<p>Làm sạch dữ liệu là bước bắt buộc sau khi nhập liệu, nhằm đảm bảo kết quả thống kê chính xác. Quá trình này bao gồm 3 bước chính:</p>
+<h3>1. Kiểm tra Lỗi Nhập liệu và Mã hóa (Kiểm tra Tính hợp lệ)</h3>
+<ul>
+    <li><strong>Cách làm:</strong> Dùng <code>Analyze > Descriptive Statistics > Frequencies...</code></li>
+    <li><strong>Mục tiêu:</strong> Chạy lệnh này cho tất cả các biến <strong>định tính</strong> (Giới tính, Nghề nghiệp...).</li>
+    <li><strong>Phát hiện:</strong> SPSS sẽ liệt kê tất cả các giá trị bạn đã nhập. Nếu biến "Giới tính" (mã 1=Nam, 2=Nữ) xuất hiện giá trị "3" hoặc "22", đó là lỗi nhập liệu. Bạn cần tìm và sửa lại.</li>
+</ul>
+<h3>2. Phát hiện Giá trị Ngoại lai (Outlier)</h3>
+<ul>
+    <li><strong>Cách làm:</strong> Dùng <code>Graphs > Legacy Dialogs > Boxplot...</code></li>
+    <li><strong>Mục tiêu:</strong> Chạy lệnh này cho các biến <strong>định lượng (Scale)</strong> (Tuổi, Hb, BMI...).</li>
+    <li><strong>Phát hiện:</strong> Biểu đồ hộp (Boxplot) sẽ hiển thị các giá trị nằm quá xa so với phân bố chung (được đánh dấu * hoặc o). Ví dụ: một bệnh nhân 160 tuổi, hoặc nồng độ Hb = 60 g/dL. Bạn cần kiểm tra lại hồ sơ gốc xem đây là lỗi nhập liệu hay một trường hợp đặc biệt.</li>
+</ul>
+<h3>3. Xử lý Dữ liệu bị thiếu (Missing Data)</h3>
+<ul>
+    <li><strong>Phát hiện:</strong> Dữ liệu thiếu được SPSS hiển thị bằng dấu chấm (.). Dùng <code>Analyze > Descriptive Statistics > Frequencies</code> để xem tỷ lệ % missing.</li>
+    <li><strong>Xử lý:</strong>
+        <ul>
+            <li>Nếu tỷ lệ missing < 5%: Có thể chấp nhận bỏ qua (SPSS tự động loại trừ khi phân tích).</li>
+            <li>Nếu tỷ lệ missing > 10%: Cần xem xét. Nếu là biến quan trọng, có thể phải dùng các kỹ thuật thay thế (Imputation), ví dụ: <code>Transform > Replace Missing Values... > Series Mean</code> (thay bằng giá trị trung bình).</li>
+        </ul>
+    </li>
+</ul>

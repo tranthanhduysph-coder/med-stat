@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Trang chủ{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-900">Chào mừng đến với Khóa học</h1>
+        <p class="mt-4 text-xl text-gray-600">NCKH & Thống kê Y học (AI-Powered) - ThS.BS. Trần Thanh Duy</p>
+    </div>
+
+    <div class="space-y-8">
+        <!-- Lặp qua các module được truyền từ app.py -->
+        {% for module_id, module in modules.items() %}
+        <div class="bg-white shadow-lg rounded-xl overflow-hidden">
+            <div class="p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-blue-700 mb-4">{{ module.title }}</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Lặp qua các chương trong module -->
+                    {% for chapter_id, chapter in module.chapters.items() %}
+                    <a href="{{ url_for('chapter', chapter_id=chapter.id) }}" class="block p-5 bg-gray-50 rounded-lg border border-gray-200 hover:bg-blue-50 hover:shadow-md transition-all duration-200 group">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Chương {{ chapter.id }}</h3>
+                            <i class='bx bx-play-circle text-3xl text-gray-400 group-hover:text-blue-600'></i>
+                        </div>
+                        <p class="text-sm font-medium text-gray-700 mt-1">{{ chapter.title }}</p>
+                        <p class="text-sm text-gray-500 mt-2 line-clamp-2">{{ chapter.summary }}</p>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

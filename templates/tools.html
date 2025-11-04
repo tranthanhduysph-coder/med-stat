@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block title %}Công cụ AI{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+    
+    <!-- Tab Navigation for Tools -->
+    <div class="border-b border-gray-200 bg-white rounded-t-lg overflow-x-auto">
+        <nav class="flex -mb-px" aria-label="Tabs">
+            <button class="tool-tab-button tab-active" data-tab="tool-advisor">
+                <i class='bx bxs-help-circle mr-2'></i> Cố vấn Kiểm định
+            </button>
+            <button class="tool-tab-button tab-inactive" data-tab="tool-grader">
+                <i class='bx bxs-check-shield mr-2'></i> Phản hồi IMRAD
+            </button>
+            <button class="tool-tab-button tab-inactive" data-tab="tool-scenario">
+                <i class='bx bxs-game mr-2'></i> Tình huống NCKH
+            </button>
+        </nav>
+    </div>
+    
+    <style>
+        .tool-tab-button { @apply whitespace-nowrap py-4 px-4 md:px-6 text-sm md:text-base font-medium text-center flex items-center; }
+        .tool-tab-button:hover { @apply bg-gray-50; }
+        .tab-active { border-bottom: 2px solid #3b82f6; color: #3b82f6; background-color: #eff6ff; }
+        .tab-inactive { border-bottom: 2px solid transparent; color: #4b5563; }
+        .tool-tab-content { display: none; }
+        .tool-tab-content.active { display: block; }
+    </style>
+
+    <!-- Tab Content Panels -->
+    <div class="bg-white shadow-md rounded-b-lg p-6 md:p-8">
+        
+        <!-- Tool 1: AI Advisor (Cố vấn Kiểm định) -->
+        <div id="tool-advisor" class="tool-tab-content active">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Cố vấn Chọn Phép kiểm định</h2>
+            <p class="text-gray-700 mb-6">Bạn không chắc nên dùng t-test hay Chi-square? Hãy trả lời các câu hỏi sau, AI sẽ tư vấn dựa trên Bảng 11.1 của giáo trình.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Cột tùy chọn -->
+                <div class="space-y-4">
+                    <div>
+                        <label for="advisor-goal" class="block text-sm font-medium text-gray-700">1. Mục tiêu phân tích?</label>
+                        <select id="advisor-goal" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="">-- Chọn mục tiêu --</option>
+                            <option value="so sánh trung bình">So sánh trung bình (ví dụ: Hb, tuổi)</option>
+                            <option value="so sánh tỷ lệ">So sánh tỷ lệ (ví dụ: tỷ lệ thiếu máu)</option>
+                            <option value="tìm tương quan">Tìm mối tương quan (ví dụ: tuổi và Hb)</option>
+                            <option value="dự đoán">Dự đoán một kết quả (ví dụ: yếu tố liên quan)</option>
+                        </select>
+                    </div>
+                     <div>
+                        <label for="advisor-groups" class="block text-sm font-medium text-gray-700">2. Số lượng nhóm so sánh?</label>
+                        <select id="advisor-groups" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="2 độc lập">2 nhóm độc lập (ví dụ: Nam vs Nữ)</option>
+                            <option value="2 liên quan">2 nhóm liên quan (ví dụ: Trước vs Sau điều trị)</option>
+                            <option value=">=3">3 nhóm trở lên (ví dụ: 3 nhóm nghề nghiệp)</option>
+                            <option value="1">Không so sánh nhóm (chỉ tìm tương quan)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="advisor-var" class="block text-sm font-medium text-gray-700">3. Biến kết quả (phụ thuộc)?</label>
+                        <select id="advisor-var" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="định lượng">Định lượng (ví dụ: Hb, BMI, tuổi)</option>
+                            <option value="định tính">Định tính (ví dụ: Có/Không thiếu máu)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="advisor-dist" class="block text-sm font-medium text-gray-700">4. Phân phối (nếu là định lượng)?</label>
+                        <select id="advisor-dist" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="chuẩn">Phân phối chuẩn</option>
+                            <option value="không chuẩn">Phân phối không chuẩn</option>
+                            <option value="không rõ">Tôi không rõ / Không áp dụng</option>
+                        </select>
+                    </div>
+                    <button id="btn-run-advisor" class="w-full bg-blue-600 text-white font-medium py-3 px-4 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        <i class='bx bxs-magic-wand mr-2'></i> Gợi ý Phép kiểm định
+                    </button>
+                </div>
+                <!-- Cột kết quả -->
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 min-h-[250px]">
+                    <h3 class="font-medium text-gray-800 mb-3">Tư vấn của AI (từ Chương 11):</h3>
+                    <div id="advisor-ai-response" class="ai-response text-gray-700">
+                        <p class="text-gray-500">Vui lòng chọn các tùy chọn bên trái để nhận gợi ý...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tool 2: AI Grader (Phản hồi IMRAD) -->
+        <div id="tool-grader" class="tool-tab-content">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">AI Phản hồi Cấu trúc Báo cáo (IMRAD)</h2>
+            <p class="text-gray-700 mb-6">Dán một phần trong bài viết của bạn (ví dụ: phần Đặt vấn đề hoặc Phương pháp), AI sẽ góp ý dựa trên các tiêu chuẩn của Chương 6.</p>
+            
+            <div class="space-y-4">
+                <div>
+                    <label for="grader-section" class="block text-sm font-medium text-gray-700">Chọn phần bạn muốn AI góp ý:</label>
+                    <select id="grader-section" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <option value="Introduction">Introduction (Đặt vấn đề)</option>
+                        <option value="Methods">Methods (Phương pháp)</option>
+                        <option value="Results">Results (Kết quả)</option>
+                        <option value="Discussion">Discussion (Bàn luận)</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="grader-text" class="block text-sm font-medium text-gray-700">Dán nội dung của bạn vào đây:</label>
+                    <textarea id="grader-text" rows="10" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Ví dụ: Nghiên cứu của chúng tôi thực hiện trên 350 bệnh nhân..."></textarea>
+                </div>
+                <button id="btn-run-grader" class="w-full md:w-auto bg-blue-600 text-white font-medium py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    <i class='bx bxs-check-shield mr-2'></i> Phản hồi ngay
+                </button>
+            </div>
+
+            <!-- Vùng hiển thị kết quả AI Grader -->
+            <div id="grader-ai-response" class="mt-6 p-6 bg-gray-50 border border-gray-200 rounded-lg ai-response" style="display: none;">
+            </div>
+        </div>
+
+        <!-- Tool 3: AI Scenarios (Tình huống NCKH) -->
+        <div id="tool-scenario" class="tool-tab-content">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Tình huống Nghiên cứu Khoa học</h2>
+            <p class="text-gray-700 mb-6">Thực hành tư duy phản biện. Nhấn nút bên dưới để AI tạo ra một tình huống nghiên cứu thực tế. Nhiệm vụ của bạn là xác định vấn đề và thiết kế NCKH phù hợp.</p>
+            
+            <button id="btn-run-scenario" class="w-full md:w-auto bg-blue-600 text-white font-medium py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                <i class='bx bxs-game mr-2'></i> Tạo tình huống mới
+            </button>
+            
+            <!-- Vùng hiển thị kết quả AI Scenario -->
+            <div id="scenario-ai-response" class="mt-6 p-6 bg-gray-50 border border-gray-200 rounded-lg ai-response" style="display: none;">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,93 @@
+<h2>10.1. Thống kê Mô tả (Descriptive Statistics)</h2>
+<p>Đây là bước đầu tiên của mọi phân tích, nhằm mô tả đặc điểm của mẫu nghiên cứu (đã học ở Chương 5). Trong SPSS, ta dùng 2 lệnh chính:</p>
+<h3>1. Lệnh Frequencies (Tần suất)</h3>
+<ul>
+    <li><strong>Dùng cho:</strong> Biến <strong>Định tính (Nominal/Ordinal)</strong> (ví dụ: Giới tính, Nghề nghiệp, Nhóm tuổi).</li>
+    <li><strong>Lệnh:</strong> <code>Analyze > Descriptive Statistics > Frequencies...</code></li>
+    <li><strong>Kết quả:</strong> Trả về bảng tần suất (n) và tỷ lệ (%). Đây cũng là lệnh dùng để kiểm tra lỗi mã hóa (Chương 8).</li>
+</ul>
+<h3>2. Lệnh Descriptives (Mô tả)</h3>
+<ul>
+    <li><strong>Dùng cho:</strong> Biến <strong>Định lượng (Scale)</strong> (ví dụ: Tuổi, Hb, BMI).</li>
+    <li><strong>Lệnh:</strong> <code>Analyze > Descriptive Statistics > Descriptives...</code></li>
+    <li><strong>Kết quả:</strong> Trả về giá trị N, Tối thiểu (Min), Tối đa (Max), Trung bình (Mean) và Độ lệch chuẩn (Std. Deviation).</li>
+    <li><strong>Lưu ý:</strong> Nếu biến Scale không phân phối chuẩn, bạn phải dùng <code>Frequencies</code> và chọn <code>Median</code>, <code>Quartiles</code> (IQR).</li>
+</ul>
+
+<h2>11.1. Kiểm định Giả thuyết (Hypothesis Testing)</h2>
+<p>Thống kê suy luận dùng để kiểm định giả thuyết (Ho/H1) và rút ra kết luận (với p-value). Việc chọn phép kiểm định phụ thuộc vào <strong>mục tiêu</strong> và <strong>loại biến số</strong>.</p>
+<p>Dưới đây là các phép kiểm định phổ biến nhất trong y học:</p>
+
+<h3>11.2. Kiểm định Chi-square (χ²) (Kiểm định Tỷ lệ)</h3>
+<ul>
+    <li><strong>Mục tiêu:</strong> So sánh <strong>tỷ lệ</strong> (%) giữa 2 hoặc nhiều nhóm.</li>
+    <li><strong>Yêu cầu:</strong> Cả 2 biến đều là <strong>Định tính (Nominal/Ordinal)</strong>.</li>
+    <li><strong>Ví dụ:</strong> So sánh tỷ lệ thiếu máu (Có/Không) giữa 3 nhóm nghề nghiệp (Nội trợ, Công nhân, NVVP).</li>
+    <li><strong>Lệnh SPSS:</strong> <code>Analyze > Descriptive Statistics > Crosstabs...</code>
+        <ol>
+            <li><code>Row(s)</code>: Đưa biến độc lập (ví dụ: <code>Nghenghiep</code>).</li>
+            <li><code>Column(s)</code>: Đưa biến phụ thuộc (ví dụ: <code>Thieumau</code>).</li>
+            <li>Nút <code>Statistics...</code>: Tích chọn <strong>Chi-square</strong> (và <strong>Risk</strong> nếu là bảng 2x2 để lấy OR).</li>
+            <li>Nút <code>Cells...</code>: Tích chọn <code>Percentages</code> → <strong>Row</strong> (tính % theo hàng).</li>
+            <li>Nhấn Continue → OK.</li>
+        </ol>
+    </li>
+    <li><strong>Đọc kết quả:</strong> Nhìn vào hàng "Pearson Chi-Square", cột "Asymp. Sig. (2-sided)". Đây chính là p-value.
+        <ul>
+            <li>Nếu <strong>p < 0.05</strong>: Có sự khác biệt có ý nghĩa thống kê về tỷ lệ.</li>
+            <li>Nếu <strong>p ≥ 0.05</strong>: Không có sự khác biệt.</li>
+        </ul>
+    </li>
+</ul>
+
+<h3>11.3. Kiểm định Independent Samples T-test (Kiểm định 2 Trung bình)</h3>
+<ul>
+    <li><strong>Mục tiêu:</strong> So sánh <strong>trung bình (Mean)</strong> giữa <strong>2 nhóm độc lập</strong>.</li>
+    <li><strong>Yêu cầu:</strong>
+        <ul>
+            <li>Biến phụ thuộc (kết quả) là <strong>Định lượng (Scale)</strong>, phân phối chuẩn.</li>
+            <li>Biến độc lập (nhóm) là <strong>Định tính</strong> và chỉ có <strong>2 giá trị</strong>.</li>
+        </ul>
+    </li>
+    <li><strong>Ví dụ:</strong> So sánh điểm Hb trung bình (Scale) giữa Nam và Nữ (Định tính 2 nhóm).</li>
+    <li><strong>Lệnh SPSS:</strong> <code>Analyze > Compare Means > Independent-Samples T Test...</code>
+        <ol>
+            <li><code>Test Variable(s)</code>: Đưa biến định lượng (ví dụ: <code>Hb</code>).</li>
+            <li><code>Grouping Variable</code>: Đưa biến định tính 2 nhóm (ví dụ: <code>GioiTinh</code>).</li>
+            <li>Nhấn <code>Define Groups...</code>: Gõ mã của 2 nhóm (ví dụ: Group 1: <code>1</code>, Group 2: <code>2</code>) → Continue → OK.</li>
+        </ol>
+    </li>
+    <li><strong>Đọc kết quả:</strong>
+        <ol>
+            <li>Nhìn "Levene's Test for Equality of Variances", cột "Sig.". Nếu Sig. ≥ 0.05, đọc dòng trên (Equal variances assumed). Nếu Sig. < 0.05, đọc dòng dưới (Equal variances not assumed).</li>
+            <li>Nhìn cột "Sig. (2-tailed)" (đây là p-value) ở dòng tương ứng.</li>
+            <li>Nếu <strong>p < 0.05</strong>: Có sự khác biệt có ý nghĩa thống kê về trung bình.</li>
+        </ol>
+    </li>
+</ul>
+
+<h3>11.4. Kiểm định One-Way ANOVA (Kiểm định 3+ Trung bình)</h3>
+<ul>
+    <li><strong>Mục tiêu:</strong> So sánh <strong>trung bình (Mean)</strong> giữa <strong>3 nhóm độc lập trở lên</strong>.</li>
+    <li><strong>Yêu cầu:</strong>
+        <ul>
+            <li>Biến phụ thuộc (kết quả) là <strong>Định lượng (Scale)</strong>, phân phối chuẩn.</li>
+            <li>Biến độc lập (nhóm) là <strong>Định tính</strong> có <strong>3+ giá trị</strong>.</li>
+        </ul>
+    </li>
+    <li><strong>Ví dụ:</strong> So sánh điểm Hb trung bình (Scale) giữa 3 nhóm nghề nghiệp (Định tính 3 nhóm).</li>
+    <li><strong>Lệnh SPSS:</strong> <code>Analyze > Compare Means > One-Way ANOVA...</code>
+        <ol>
+            <li><code>Dependent List</code>: Đưa biến định lượng (ví dụ: <code>Hb</code>).</li>
+            <li><code>Factor</code>: Đưa biến định tính 3+ nhóm (ví dụ: <code>Nghenghiep</code>).</li>
+            <li>Nút <code>Post Hoc...</code>: Tích chọn <strong>Tukey</strong> hoặc <strong>Bonferroni</strong> (để xem nhóm nào khác nhóm nào) → Continue → OK.</li>
+        </ol>
+    </li>
+    <li><strong>Đọc kết quả:</strong>
+        <ol>
+            <li>Nhìn bảng "ANOVA", cột "Sig." (đây là p-value tổng).</li>
+            <li>Nếu <strong>p < 0.05</strong>: Có sự khác biệt trung bình giữa ít nhất 2 nhóm. Phải đọc tiếp bảng "Post Hoc Tests" để xem cặp nào khác nhau.</li>
+        </ol>
+    </li>
+</ul>
+<p><em>(Lưu ý: Nếu dữ liệu không chuẩn, T-test được thay bằng Mann-Whitney U, và ANOVA được thay bằng Kruskal-Wallis).</em></p>
