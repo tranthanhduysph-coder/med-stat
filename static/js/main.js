@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (quizModal) {
         const quizBody = document.getElementById('quiz-body');
         const startBtn = document.getElementById('start-quiz-btn');
-        const startBtnBottom = document.getElementById('start-quiz-btn-bottom');
+        const startBtnBottom = document.getElementById('start-quiz-btn-bottom'); // SỬA LỖI ID TRÙNG
         const closeQuizBtn = document.getElementById('close-quiz-btn');
         const submitBtn = document.getElementById('submit-quiz-btn');
         const retakeBtn = document.getElementById('retake-quiz-btn');
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let quizData = []; 
 
         function resetQuizModal() {
-            if (quizLoading) quizLoading.classList.remove('hidden');
+            if (quizLoading) quizLoading.classList.add('hidden');
             if (quizForm) quizForm.classList.add('hidden');
             if (quizResults) quizResults.classList.add('hidden');
             if (submitBtn) submitBtn.classList.add('hidden');
@@ -190,6 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (quizBody) quizBody.scrollTop = 0;
         }
 
+        // HÀM SỰ KIỆN CHÍNH (ĐÃ SỬA)
         const handleStartQuiz = async (e) => {
             e.preventDefault(); 
             const chapterId = e.currentTarget.dataset.chapterId;
@@ -217,10 +218,10 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         if (startBtn) {
-            startBtn.addEventListener('click', handleStartQuiz);
+            startBtn.addEventListener('click', handleStartQuiz); // Gắn sự kiện cho nút đầu
         }
         if (startBtnBottom) {
-            startBtnBottom.addEventListener('click', handleStartQuiz);
+            startBtnBottom.addEventListener('click', handleStartQuiz); // Gắn sự kiện cho nút cuối
         }
 
         if (closeQuizBtn) {
@@ -254,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     general: document.getElementById('proposal-general').value,
                     specific: document.getElementById('proposal-specific').value,
                     methods: document.getElementById('proposal-methods').value,
-                    variables: document.getElementById('proposal-variables').value,
+                    variables: document.getElementById('proposal-variables').value, 
                     sample: document.getElementById('proposal-sample').value,
                     analysis: document.getElementById('proposal-analysis').value,
                     ethics: document.getElementById('proposal-ethics').value,

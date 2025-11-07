@@ -4,6 +4,7 @@ import requests
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv 
 
+# Tải biến môi trường (RẤT QUAN TRỌNG, phải ở ngay đầu)
 load_dotenv() 
 
 app = Flask(__name__)
@@ -68,14 +69,12 @@ def _call_gemini_api(user_query, system_instruction, use_grounding=False, json_s
         if response.status_code == 200:
             result = response.json()
             if "candidates" not in result or not result["candidates"]:
-                # Thử kiểm tra xem có phải là lỗi do prompt bị block không
                 if result.get("promptFeedback", {}).get("blockReason"):
                     return {"error": f"Yêu cầu bị chặn: {result['promptFeedback']['blockReason']}"}, 400
                 raise Exception("Phản hồi API không hợp lệ: Thiếu 'candidates'.")
             
             candidate = result.get("candidates", [{}])[0]
             
-            # Kiểm tra nếu AI không trả về gì (ví dụ: bị bộ lọc an toàn chặn)
             if "content" not in candidate or "parts" not in candidate["content"]:
                 finish_reason = candidate.get("finishReason", "UNKNOWN")
                 if finish_reason == "SAFETY":
@@ -193,10 +192,8 @@ def api_proposal():
          user_query = f"Từ 'Mục tiêu tổng quát' sau: \"{context.get('general', '')}\", gợi ý 2-3 'Mục tiêu cụ thể' (SMART, Chương 2)."
     elif step == 'proposal-methods':
          user_query = f"Cho mục tiêu: \"{context.get('general', '')}\", gợi ý 'Đối tượng và Phương pháp Nghiên cứu' (Chương 3, 4): Thiết kế, Đối tượng, Tiêu chuẩn chọn/loại trừ."
-    # --- MỤC MỚI ĐƯỢC THÊM VÀO ---
     elif step == 'proposal-variables':
          user_query = f"Dựa trên các mục tiêu: \"{context.get('general', '')}\" và \"{context.get('specific', '')}\", hãy giúp tôi xác định các 'Biến số nghiên cứu' chính (dựa trên Chương 4). Phân loại rõ biến độc lập, biến phụ thuộc, và các biến số thông tin chung."
-    # --- KẾT THÚC MỤC MỚI ---
     elif step == 'proposal-sample':
         user_query = f"Cho thiết kế nghiên cứu: \"{context.get('methods', '')}\", gợi ý 'Công thức tính cỡ mẫu' và 'Phương pháp chọn mẫu' (Chương 3)."
     elif step == 'proposal-analysis':
@@ -253,7 +250,5 @@ def api_ethics_chat():
 # --- KHỞI CHẠY SERVER ---
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    # BẬT debug=True khi chạy local để xem lỗi chi tiết
     # TẮT debug=False khi deploy chính thức
-    app.run(host="0.0.0.0", port=port, debug=True)
-
+    app.run(host="0.0.0.0", port=port, debug=False)
