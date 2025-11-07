@@ -100,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (quizModal) {
         const quizBody = document.getElementById('quiz-body');
         const startBtn = document.getElementById('start-quiz-btn');
+        const startBtnBottom = document.getElementById('start-quiz-btn-bottom');
         const closeQuizBtn = document.getElementById('close-quiz-btn');
         const submitBtn = document.getElementById('submit-quiz-btn');
         const retakeBtn = document.getElementById('retake-quiz-btn');
@@ -114,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let quizData = []; 
 
         function resetQuizModal() {
-            if (quizLoading) quizLoading.classList.add('hidden');
+            if (quizLoading) quizLoading.classList.remove('hidden');
             if (quizForm) quizForm.classList.add('hidden');
             if (quizResults) quizResults.classList.add('hidden');
             if (submitBtn) submitBtn.classList.add('hidden');
@@ -189,33 +190,37 @@ document.addEventListener('DOMContentLoaded', () => {
             if (quizBody) quizBody.scrollTop = 0;
         }
 
-        if (startBtn) {
-            startBtn.addEventListener('click', async (e) => {
-                e.preventDefault(); 
-                
-                const chapterId = startBtn.dataset.chapterId;
-                
-                resetQuizModal();
-                quizModal.classList.remove('hidden');
-                quizLoading.classList.remove('hidden');
-                
-                try {
-                    const response = await fetchFromBackend('/api/quiz', { chapterId: chapterId });
+        const handleStartQuiz = async (e) => {
+            e.preventDefault(); 
+            const chapterId = e.currentTarget.dataset.chapterId;
+            
+            resetQuizModal();
+            quizModal.classList.remove('hidden');
+            quizLoading.classList.remove('hidden');
+            
+            try {
+                const response = await fetchFromBackend('/api/quiz', { chapterId: chapterId });
 
-                    if (response.data && response.data.length > 0) {
-                        buildQuizForm(response.data);
-                        quizLoading.classList.add('hidden');
-                        quizForm.classList.remove('hidden');
-                        submitBtn.classList.remove('hidden');
-                    } else {
-                        throw new Error(response.error || 'Không nhận được dữ liệu câu hỏi từ AI.');
-                    }
-
-                } catch (error) {
-                    console.error('Lỗi khi gọi API Tự lượng giá:', error);
-                    quizLoading.innerHTML = `<p class="text-red-600 text-center">Lỗi: ${error.message}</p>`;
+                if (response.data && response.data.length > 0) {
+                    buildQuizForm(response.data);
+                    quizLoading.classList.add('hidden');
+                    quizForm.classList.remove('hidden');
+                    submitBtn.classList.remove('hidden');
+                } else {
+                    throw new Error(response.error || 'Không nhận được dữ liệu câu hỏi từ AI.');
                 }
-            });
+
+            } catch (error) {
+                console.error('Lỗi khi gọi API Tự lượng giá:', error);
+                quizLoading.innerHTML = `<p class="text-red-600 text-center">Lỗi: ${error.message}</p>`;
+            }
+        };
+
+        if (startBtn) {
+            startBtn.addEventListener('click', handleStartQuiz);
+        }
+        if (startBtnBottom) {
+            startBtnBottom.addEventListener('click', handleStartQuiz);
         }
 
         if (closeQuizBtn) {
@@ -493,4 +498,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
-
