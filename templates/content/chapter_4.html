@@ -1,51 +1,90 @@
-<h2>4.1. Khái niệm Biến số (Variable)</h2>
-<p>Biến số là đặc điểm hoặc thuộc tính có thể thay đổi (biến thiên) giữa các đối tượng hoặc theo thời gian, và có thể đo lường được.</p>
-<p>Ví dụ: Huyết áp, Giới tính, Tuổi, Tình trạng thiếu máu (có/không).</p>
+<div class="prose">
+    <h2>Chương 4: Biến số và Kỹ thuật Thu thập Số liệu</h2>
 
-<h2>4.2. Phân loại Biến số</h2>
-<h3>4.2.1. Phân loại theo Bản chất Dữ liệu</h3>
-<ul>
-    <li><strong>Biến Định tính (Qualitative/Categorical):</strong> Không thể đo bằng số, chỉ phân loại nhóm.
-        <ul>
-            <li>Ví dụ: Giới tính (Nam/Nữ), Nghề nghiệp, Nhóm máu (A, B, AB, O).</li>
-            <li><strong>Biến Nhị phân (Binary):</strong> Trường hợp đặc biệt của biến định tính, chỉ có 2 giá trị. (Ví dụ: Thiếu máu (Có/Không), Tiêm vắc xin (Có/Không)).</li>
-        </ul>
-    </li>
-    <li><strong>Biến Định lượng (Quantitative/Numerical):</strong> Đo được bằng số, có thể tính trung bình.
-        <ul>
-            <li>Ví dụ: Cân nặng (kg), Huyết áp (mmHg), Tuổi (năm), Nồng độ Hb (g/dL).</li>
-        </ul>
-    </li>
-</ul>
+    <h3>4.1. Biến số (Variable)</h3>
+    <p>Là đặc điểm hoặc thuộc tính có thể thay đổi (biến thiên) giữa các cá thể, có thể đo lường được. (Ví dụ: tuổi, giới tính, huyết áp).</p>
 
-<h3>4.2.2. Phân loại theo Vai trò trong Nghiên cứu</h3>
-<ul>
-    <li><strong>Biến Độc lập (Independent Variable):</strong> Yếu tố ảnh hưởng, nguyên nhân (Ví dụ: Tuổi, Giới, Chế độ ăn).</li>
-    <li><strong>Biến Phụ thuộc (Dependent Variable):</strong> Kết quả, hậu quả chịu ảnh hưởng (Ví dụ: Tình trạng thiếu máu, Huyết áp).</li>
-    <li><strong>Biến Nhiễu (Confounding Variable):</strong> Yếu tố ngoài ý muốn, ảnh hưởng đến cả biến độc lập và phụ thuộc, làm sai lệch mối liên hệ. (Ví dụ: Nghiên cứu (Thuốc lá -> Ung thư phổi), tuổi là biến nhiễu).</li>
-</ul>
+    <h3>4.2. Phân loại Biến số (Quan trọng nhất)</h3>
+    
+    <h4>Phân loại theo Bản chất (Thang đo)</h4>
+    <p>Việc chọn đúng thang đo quyết định bạn sẽ dùng phép kiểm định thống kê nào (T-Test hay Chi-Square).</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Loại biến / Thang đo</th>
+                <th>Đặc điểm</th>
+                <th>Ví dụ</th>
+                <th>Phép toán</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Định tính (Qualitative)</strong></td>
+                <td>Phân loại nhóm</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>1. Danh nghĩa (Nominal)</td>
+                <td>Chỉ phân loại, không có thứ tự.</td>
+                <td>Giới tính (Nam/Nữ), Nhóm máu (A/B/O)</td>
+                <td>Đếm, Tần số (%)</td>
+            </tr>
+            <tr>
+                <td>2. Thứ bậc (Ordinal)</td>
+                <td>Có thứ tự, nhưng khoảng cách không đều.</td>
+                <td>Mức độ đau (Nhẹ/Vừa/Nặng), Học lực (Yếu/TB/Khá)</td>
+                <td>Đếm, Xếp hạng, Trung vị (Median)</td>
+            </tr>
+            <tr>
+                <td><strong>Định lượng (Quantitative)</strong></td>
+                <td>Đo bằng số, có thể tính toán.</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>3. Khoảng (Interval)</td>
+                <td>Khoảng cách đều, không có gốc 0 tuyệt đối.</td>
+                <td>Nhiệt độ (°C)</td>
+                <td>Cộng, Trừ, Trung bình (Mean)</td>
+            </tr>
+            <tr>
+                <td>4. Tỷ lệ (Ratio)</td>
+                <td>Khoảng cách đều, có gốc 0 tuyệt đối.</td>
+                <td>Cân nặng (kg), Chiều cao (cm), Tuổi (năm)</td>
+                <td>Mọi phép toán (Cộng, Trừ, Nhân, Chia)</td>
+            </tr>
+        </tbody>
+    </table>
+    <p><strong>Lưu ý:</strong> Trong SPSS, thang đo "Scale" được dùng cho cả "Interval" và "Ratio".</p>
 
-<h2>4.3. Bốn Thang đo Biến số (Scales of Measurement)</h2>
-<p>Thang đo quyết định phép thống kê nào được sử dụng. Đây là kiến thức nền tảng của thống kê.</p>
-<ol>
-    <li><strong>Danh nghĩa (Nominal):</strong> Chỉ phân loại, không có thứ tự. (Ví dụ: Giới tính (1=Nam, 2=Nữ), Nhóm máu). Phép toán: Chỉ đếm tần suất, tỷ lệ (%).</li>
-    <li><strong>Thứ bậc (Ordinal):</strong> Có thứ tự, nhưng khoảng cách không đều. (Ví dụ: Mức độ đau (1=Nhẹ, 2=Vừa, 3=Nặng), Học lực (Yếu, TB, Khá, Giỏi)). Phép toán: Tần suất, Tỷ lệ, Trung vị (Median).</li>
-    <li><strong>Khoảng (Interval):</strong> Có thứ tự, khoảng cách đều, nhưng <strong>không có gốc 0 tuyệt đối</strong>. (Ví dụ: Nhiệt độ °C (0°C không có nghĩa là không có nhiệt)). Phép toán: Cộng, Trừ, Trung bình (Mean).</li>
-    <li><strong>Tỷ lệ (Ratio):</strong> Có thứ tự, khoảng cách đều, và <strong>có gốc 0 tuyệt đối</strong> (Số 0 có nghĩa là "không có gì"). (Ví dụ: Cân nặng (0kg là không nặng), Chiều cao (0cm), Nồng độ Hb). Phép toán: Mọi phép toán (+, -, *, /).</li>
-</ol>
-<p>Trong SPSS, thang đo "Khoảng" (Interval) và "Tỷ lệ" (Ratio) thường được gộp chung thành <strong>"Scale"</strong>.</p>
+    <h4>Phân loại theo Vai trò trong Nghiên cứu</h4>
+    <ul>
+        <li><strong>Biến độc lập (Independent Variable):</strong> Yếu tố nguyên nhân, yếu tố phơi nhiễm (Ví dụ: Hút thuốc lá, Tuổi, Giới tính).</li>
+        <li><strong>Biến phụ thuộc (Dependent Variable):</strong> Yếu tố kết quả, bệnh tật (Ví dụ: Ung thư phổi, Huyết áp).</li>
+        <li><strong>Biến nhiễu (Confounding Variable):</strong> Yếu tố thứ ba ảnh hưởng đến cả biến độc lập và phụ thuộc, gây sai lệch mối liên hệ.</li>
+    </ul>
 
-<h2>4.4. Các Khái niệm Thống kê Nền tảng</h2>
-<ul>
-    <li><strong>Trung bình (Mean):</strong> Giá trị trung tâm, nhạy cảm với giá trị ngoại lai (outlier). Chỉ dùng cho biến định lượng (Scale) có phân phối chuẩn.</li>
-    <li><strong>Trung vị (Median):</strong> Giá trị đứng giữa của dãy số đã sắp xếp. Không bị ảnh hưởng bởi outlier. Dùng cho biến Thứ bậc (Ordinal) hoặc biến Scale (không chuẩn).</li>
-    <li><strong>Độ lệch chuẩn (Standard Deviation - SD):</strong> Đo mức độ phân tán (biến động) của dữ liệu quanh giá trị trung bình. SD càng nhỏ, dữ liệu càng đồng nhất.</li>
-    <li><strong>Sai số chuẩn (Standard Error - SE):</strong> Đo mức độ sai lệch giữa trung bình mẫu và trung bình quần thể thật. SE phụ thuộc vào SD và cỡ mẫu (SE = SD / √n). Cỡ mẫu (n) càng lớn, SE càng nhỏ.</li>
-    <li><strong>Khoảng tin cậy 95% (95% Confidence Interval - CI):</strong> Khoảng ước lượng mà giá trị thật của quần thể có 95% khả năng nằm trong đó. (Ví dụ: 95% CI của Hb là [11.2; 12.0]).</li>
-    <li><strong>Giá trị p (p-value):</strong> Xác suất quan sát được kết quả nếu Giả thuyết không (Ho) là đúng.
-        <ul>
-            <li><strong>p < 0.05:</strong> Bác bỏ Ho. Kết quả có ý nghĩa thống kê (sự khác biệt là thật).</li>
-            <li><strong>p ≥ 0.05:</strong> Chưa đủ bằng chứng bác bỏ Ho. Kết quả không có ý nghĩa thống kê (sự khác biệt có thể do ngẫu nhiên).</li>
-        </ul>
-    </li>
-</ul>
+    <h3>4.3. Kỹ thuật Thu thập Số liệu</h3>
+    <ul>
+        <li><strong>Phỏng vấn trực tiếp:</strong> Người nghiên cứu hỏi và ghi lại câu trả lời.</li>
+        <li><strong>Bảng câu hỏi tự điền (Survey):</strong> Đối tượng tự trả lời.</li>
+        <li><strong>Khai thác hồ sơ bệnh án (CRF):</strong> Thu thập dữ liệu thứ cấp có sẵn.</li>
+        <li><strong>Đo lường sinh học:</strong> Xét nghiệm, đo huyết áp, cân nặng...</li>
+    </ul>
+
+    <h3>4.4. Các khái niệm Thống kê Cơ bản</h3>
+    <ul>
+        <li><strong>Trung bình (Mean):</strong> Giá trị trung tâm, nhạy cảm với giá trị ngoại lai (outlier).</li>
+        <li><strong>Trung vị (Median):</strong> Giá trị ở giữa (50%) của dãy số đã sắp xếp, dùng khi dữ liệu không chuẩn hoặc có ngoại lai.</li>
+        <li><strong>Độ lệch chuẩn (Standard Deviation - SD):</strong> Đo mức độ phân tán của dữ liệu quanh giá trị trung bình (Mean). SD nhỏ = dữ liệu tập trung, đồng nhất.</li>
+        <li><strong>Sai số chuẩn (Standard Error - SE):</strong> Đo mức độ sai lệch của trung bình mẫu so với trung bình quần thể thật. <code>SE = SD / √n</code> (n là cỡ mẫu). Cỡ mẫu càng lớn, SE càng nhỏ.</li>
+        <li><strong>Khoảng tin cậy 95% (95% CI):</strong> Khoảng giá trị mà chúng ta tin tưởng 95% rằng giá trị thật của quần thể nằm trong đó. <code>95% CI = Mean ± 1.96 * SE</code>.</li>
+        <li><strong>Giá trị p (p-value):</strong> Xác suất quan sát được kết quả bằng hoặc cực đoan hơn nếu giả thuyết H0 (không có khác biệt) là đúng.
+            <ul>
+                <li><strong>p < 0.05:</strong> Có ý nghĩa thống kê (Bác bỏ H0, chấp nhận H1).</li>
+                <li><strong>p ≥ 0.05:</strong> Không có ý nghĩa thống kê (Chấp nhận H0).</li>
+            </ul>
+        </li>
+    </ul>
+</div>

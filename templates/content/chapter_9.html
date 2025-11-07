@@ -1,77 +1,67 @@
-<h2>9.1. Mục đích của Xử lý Số liệu</h2>
-<p>Sau khi dữ liệu đã "sạch", chúng ta thường cần biến đổi (transform) chúng để tạo ra các biến mới hoặc nhóm các biến lại với nhau, phục vụ cho mục tiêu phân tích. Chương này tập trung vào menu <code>Transform</code> và <code>Data</code> trong SPSS.</p>
+<div class="prose">
+    <h2>Chương 9: Tính toán và Xử lý Số liệu (Data Transformation)</h2>
+    <p>Sau khi làm sạch, chúng ta cần biến đổi dữ liệu thô thành các biến sẵn sàng cho phân tích (ví dụ: nhóm tuổi, chỉ số BMI).</p>
 
-<h2>9.2. Tạo biến mới (Compute Variable)</h2>
-<p>Dùng khi bạn muốn tạo một biến mới dựa trên công thức tính toán từ các biến đã có.</p>
-<ul>
-    <li><strong>Lệnh:</strong> <code>Transform > Compute Variable...</code></li>
-    <li><strong>Ví dụ 1: Tính chỉ số BMI</strong>
-        <ul>
-            <li>Giả sử bạn có 2 biến: <code>Cannang</code> (kg) và <code>Chieucao</code> (cm).</li>
-            <li>Ô <code>Target Variable</code> (Biến đích): gõ <code>BMI</code>.</li>
-            <li>Ô <code>Numeric Expression</code> (Biểu thức): gõ <code>Cannang / ((Chieucao/100)**2)</code></li>
-            <li>Nhấn OK, SPSS sẽ tạo một cột <code>BMI</code> mới ở cuối Data View.</li>
-        </ul>
-    </li>
-    <li><strong>Ví dụ 2: Tính tuổi</strong>
-        <ul>
-            <li>Giả sử bạn có biến <code>Namsinh</code>.</li>
-            <li><code>Target Variable</code>: gõ <code>Tuoi</code>.</li>
-            <li><code>Numeric Expression</code>: gõ <code>2024 - Namsinh</code></li>
-        </ul>
-    </li>
-</ul>
+    <h3>9.1. Tạo biến mới (Compute Variable)</h3>
+    <p>Dùng khi bạn muốn tạo một biến mới dựa trên phép tính từ các biến hiện có.</p>
+    <p><strong>Ví dụ: Tính BMI từ <code>can_nang</code> (kg) và <code>chieu_cao</code> (cm).</strong></p>
+    <ul>
+        <li><strong>Cách làm:</strong> Vào <strong>Transform</strong> → <strong>Compute Variable...</strong></li>
+        <li>Trong ô "Target Variable" (Biến đích), gõ tên biến mới: <code>BMI</code>.</li>
+        <li>Trong ô "Numeric Expression" (Biểu thức), gõ công thức:
+            <br><code>can_nang / ((chieu_cao / 100) ** 2)</code>
+        </li>
+        <li>Nhấn OK. SPSS sẽ tạo một cột <code>BMI</code> mới ở cuối Data View.</li>
+    </ul>
 
-<h2>9.3. Tái mã hóa (Tạo nhóm) (Recode Variable)</h2>
-<p>Đây là một trong những lệnh quan trọng nhất. Dùng khi bạn muốn chuyển đổi giá trị của một biến, thường là để <strong>nhóm một biến định lượng (Scale) thành một biến định tính (Nominal/Ordinal)</strong>.</p>
-<p>Luôn luôn dùng <strong><code>Recode into Different Variables</code></strong> (Tái mã hóa sang biến MỚI) để giữ lại biến gốc.</p>
-<ul>
-    <li><strong>Lệnh:</strong> <code>Transform > Recode into Different Variables...</code></li>
-    <li><strong>Ví dụ: Tạo biến "NhomTuoi" từ biến "Tuoi"</strong>
-        <ol>
-            <li>Chọn biến <code>Tuoi</code> đưa vào ô Input.</li>
-            <li>Ô <code>Output Variable</code> (Biến mới): gõ tên <code>NhomTuoi</code>, nhãn (Label) <code>"Phân nhóm tuổi"</code> → Nhấn <code>Change</code>.</li>
-            <li>Nhấn nút <code>Old and New Values...</code> (Giá trị cũ và mới).</li>
-            <li>Thiết lập quy tắc nhóm:
-                <ul>
-                    <li>Chọn <code>Range, LO THRU value:</code> gõ <code>24</code> → Ô New Value: gõ <code>1</code> → Add. (Nhóm 1: từ thấp nhất đến 24 tuổi).</li>
-                    <li>Chọn <code>Range:</code> gõ <code>25</code> THRU <code>34</code> → Ô New Value: gõ <code>2</code> → Add. (Nhóm 2: từ 25 đến 34 tuổi).</li>
-                    <li>Chọn <code>Range, value THRU HI:</code> gõ <code>35</code> → Ô New Value: gõ <code>3</code> → Add. (Nhóm 3: từ 35 tuổi trở lên).</li>
-                </ul>
-            </li>
-            <li>Nhấn Continue → OK.</li>
-            <li><strong>BẮT BUỘC:</strong> Sau khi tạo, bạn phải vào <code>Variable View</code>, tìm biến <code>NhomTuoi</code> mới và khai báo <code>Values</code> cho nó (1="<25 tuổi", 2="25-34 tuổi", 3=">=35 tuổi") và chuyển <code>Measure</code> thành <code>Ordinal</code>.</li>
-        </ol>
-    </li>
-</ul>
+    <h3>9.2. Tái mã hóa biến (Recode Variable)</h3>
+    <p>Dùng khi bạn muốn gộp nhóm (định lượng → định tính) hoặc thay đổi giá trị mã hóa.</p>
+    <p><strong>Ví dụ: Tạo biến <code>nhom_tuoi</code> (1='<25', 2='25-34', 3='≥35') từ biến <code>tuoi</code>.</strong></p>
+    <p>Luôn ưu tiên dùng <strong>"Recode into Different Variables"</strong> (Tái mã hóa sang biến khác) để giữ lại biến gốc.</p>
+    <ul>
+        <li><strong>Cách làm:</strong> <strong>Transform</strong> → <strong>Recode into Different Variables...</strong></li>
+        <li>Chuyển biến <code>tuoi</code> vào ô giữa.</li>
+        <li>Ở ô "Output Variable" (Biến đầu ra) bên phải, gõ tên biến mới: <code>nhom_tuoi</code>. Nhấn <strong>Change</strong>.</li>
+        <li>Nhấp vào nút <strong>"Old and New Values..."</strong>.</li>
+        <li>Thiết lập các quy tắc:
+            <ul>
+                <li>Bên trái (Old Value): Chọn "Range, LOWEST through value:", gõ <code>24</code>.</li>
+                <li>Bên phải (New Value): Gõ <code>1</code>. Nhấn <strong>Add</strong>.</li>
+            </ul>
+            <ul>
+                <li>Bên trái: Chọn "Range:", gõ <code>25</code> và <code>34</code>.</li>
+                <li>Bên phải: Gõ <code>2</code>. Nhấn <strong>Add</strong>.</li>
+            </ul>
+            <ul>
+                <li>Bên trái: Chọn "Range, value through HIGHEST:", gõ <code>35</code>.</li>
+                <li>Bên phải: Gõ <code>3</code>. Nhấn <strong>Add</strong>.</li>
+            </ul>
+        </li>
+        <li>Nhấn <strong>Continue</strong>, sau đó nhấn <strong>OK</strong>.</li>
+        <li><strong>QUAN TRỌNG:</strong> Quay lại Variable View, tìm biến <code>nhom_tuoi</code> mới, và khai báo <strong>Values</strong> (1="<25", 2="25-34", 3="≥35") và <strong>Measure</strong> (Ordinal) cho nó.</li>
+    </ul>
 
-<h2>9.4. Lọc dữ liệu (Select Cases)</h2>
-<p>Dùng khi bạn muốn phân tích trên một nhóm đối tượng cụ thể (ví dụ: chỉ phân tích ở nhóm Nữ, hoặc nhóm >=35 tuổi).</p>
-<ul>
-    <li><strong>Lệnh:</strong> <code>Data > Select Cases...</code></li>
-    <li><strong>Cách làm:</strong>
-        <ol>
-            <li>Chọn <code>If condition is satisfied</code> → Nhấn nút <code>If...</code></li>
-            <li>Nhập điều kiện logic, ví dụ: <code>GioiTinh = 2</code> (chỉ chọn Nữ).</li>
-            <li>Hoặc: <code>Tuoi >= 35 AND GioiTinh = 1</code> (chỉ chọn Nam từ 35 tuổi trở lên).</li>
-            <li>Chọn <code>Filter out unselected cases</code> (mặc định) → OK.</li>
-            <li>Trong Data View, SPSS sẽ gạch chéo những đối tượng không thỏa mãn. Mọi phân tích sau đó sẽ tự động loại trừ họ.</li>
-            <li><strong>Lưu ý:</strong> Nhớ tắt lọc (chọn <code>All cases</code>) sau khi phân tích xong.</li>
-        </ol>
-    </li>
-</ul>
+    <h3>9.3. Lọc dữ liệu (Select Cases)</h3>
+    <p>Dùng khi bạn muốn phân tích trên một nhóm đối tượng cụ thể (ví dụ: chỉ phân tích ở nhóm Nữ).</p>
+    <ul>
+        <li><strong>Cách làm:</strong> <strong>Data</strong> → <strong>Select Cases...</strong></li>
+        <li>Chọn "If condition is satisfied". Nhấp vào nút "If...".</li>
+        <li>Gõ điều kiện: <code>gioi_tinh = 2</code> (giả sử 2=Nữ).</li>
+        <li>Nhấn <strong>Continue</strong>.</li>
+        <li>Chọn "Filter out unselected cases" (Các ca không thỏa mãn sẽ bị gạch chéo, nhưng không bị xóa).</li>
+        <li>Nhấn <strong>OK</strong>.</li>
+        <li>Từ giờ, mọi phân tích bạn chạy (Frequencies, T-Test...) sẽ chỉ thực hiện trên nhóm Nữ.</li>
+        <li><strong>LƯU Ý:</strong> Nhớ tắt chế độ này (chọn "All cases") sau khi phân tích xong.</li>
+    </ul>
 
-<h2>9.5. Phân tách kết quả (Split File)</h2>
-<p>Dùng khi bạn muốn SPSS tự động chạy <strong>một phân tích</strong> nhưng trả kết quả riêng biệt cho <strong>từng nhóm</strong> (ví dụ: tính trung bình Hb riêng cho Nam và riêng cho Nữ).</p>
-<ul>
-    <li><strong>Lệnh:</strong> <code>Data > Split File...</code></li>
-    <li><strong>Cách làm:</strong>
-        <ol>
-            <li>Chọn <code>Compare groups</code>.</li>
-            <li>Chọn biến phân nhóm (ví dụ: <code>GioiTinh</code>) đưa vào ô <code>Groups Based on</code> → OK.</li>
-            <li>Chạy lệnh phân tích (ví dụ: <code>Analyze > Descriptives > Hb</code>).</li>
-            <li>Cửa sổ Output sẽ hiển thị 2 bảng riêng biệt: một cho Nam, một cho Nữ.</li>
-            <li><strong>Lưu ý:</strong> Nhớ tắt Split File (chọn <code>Analyze all cases, do not create groups</code>) sau khi xong.</li>
-        </ol>
-    </li>
-</ul>
+    <h3>9.4. Phân nhóm dữ liệu (Split File)</h3>
+    <p>Dùng khi bạn muốn SPSS tự động chạy 1 phân tích song song cho nhiều nhóm.</p>
+    <ul>
+        <li><strong>Cách làm:</strong> <strong>Data</strong> → <strong>Split File...</strong></li>
+        <li>Chọn "Compare groups".</li>
+        <li>Chuyển biến nhóm (ví dụ: <code>gioi_tinh</code>) vào ô "Groups Based on:".</li>
+        <li>Nhấn <strong>OK</strong>.</li>
+        <li>Bây giờ, nếu bạn chạy <strong>Analyze</strong> → <strong>Descriptive Statistics</strong> → <strong>Descriptives...</strong> cho biến "Hb", SPSS sẽ tự động xuất 2 bảng: 1 cho Nam và 1 cho Nữ.</li>
+        <li><strong>LƯU Ý:</strong> Nhớ tắt chế độ này (chọn "Analyze all cases, do not create groups") sau khi xong.</li>
+    </ul>
+</div>
