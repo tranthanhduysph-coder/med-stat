@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     reviewHtml += `
                         <div class="p-3 bg-red-50 border border-red-200 rounded-lg">
-                            <p class="font-semibold text-red-800">Câu ${index + 1}: ${escapeHTML(q.question)}</p>
+                            <p class="font-semibold text-red-800">Câu ${index + 1}: ${escapeHTML(question.question)}</p>
                             <p class="text-sm text-gray-700 mt-1">${userAnswerText}</p>
                             <p class="text-sm text-green-700 font-medium mt-1">Đáp án đúng: "${escapeHTML(correctAnswerText)}"</p>
                             <p class="text-sm text-gray-600 mt-1"><em>Giải thích: ${escapeHTML(question.explanation)}</em></p>
