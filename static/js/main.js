@@ -49,7 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace(/^(\d+)\. (.*$)/gm, '<ol class="list-decimal list-inside mb-4"><li>$2</li></ol>')
             .replace(/\n/g, '<br>')
             .replace(/<\/ul><br><ul>/g, '')
-            .replace(/<\/ol><br><ol>/g, '');
+            .replace(/<\/ol><br><ol>/g, '')
+            .replace(/<pre><br>/g, '<pre>') // Fix lỗi ngắt dòng trong code block
+            .replace(/<br><\/pre>/g, '</pre>'); // Fix lỗi ngắt dòng trong code block
     }
 
     function displayAIResponse(targetElement, text, sources = []) {
@@ -96,13 +98,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- LOGIC CHO TỰ LƯỢNG GIÁ (TRẮC NGHIỆM) ---
     const quizModal = document.getElementById('quiz-modal');
     if (quizModal) {
         const quizBody = document.getElementById('quiz-body');
-        const startBtn = document.getElementById('start-quiz-btn');
-        const startBtnBottom = document.getElementById('start-quiz-btn-bottom'); // SỬA LỖI ID TRÙNG
+        const startBtn = document.getElementById('start-quiz-btn'); // Nút ở đầu trang
         const closeQuizBtn = document.getElementById('close-quiz-btn');
-        const submitBtn = document.getElementById('submit-quiz-btn');
+        const submitBtn = document.getElementById('submit-quiz-btn'); // ĐÃ SỬA ID
         const retakeBtn = document.getElementById('retake-quiz-btn');
         
         const quizLoading = document.getElementById('quiz-loading');
@@ -115,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let quizData = []; 
 
         function resetQuizModal() {
-            if (quizLoading) quizLoading.classList.add('hidden');
+            if (quizLoading) quizLoading.style.display = 'flex'; // Hiện lại loading
             if (quizForm) quizForm.classList.add('hidden');
             if (quizResults) quizResults.classList.add('hidden');
             if (submitBtn) submitBtn.classList.add('hidden');
@@ -173,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <p class="font-semibold text-red-800">Câu ${index + 1}: ${escapeHTML(q.question)}</p>
                             <p class="text-sm text-gray-700 mt-1">${userAnswerText}</p>
                             <p class="text-sm text-green-700 font-medium mt-1">Đáp án đúng: "${escapeHTML(correctAnswerText)}"</p>
-                            <p class="text-sm text-gray-600 mt-1"><em>Giải thích: ${escapeHTML(q.explanation)}</em></p>
+                            <p class="text-sm text-gray-600 mt-1"><em>Giải thích: ${escapeHTML(question.explanation)}</em></p>
                         </div>
                     `;
                 }
@@ -190,21 +192,21 @@ document.addEventListener('DOMContentLoaded', () => {
             if (quizBody) quizBody.scrollTop = 0;
         }
 
-        // HÀM SỰ KIỆN CHÍNH (ĐÃ SỬA)
         const handleStartQuiz = async (e) => {
             e.preventDefault(); 
             const chapterId = e.currentTarget.dataset.chapterId;
+            const chapterTitle = e.currentTarget.dataset.chapterTitle;
             
+            document.getElementById('quiz-title').textContent = `Lượng giá: ${chapterTitle}`;
             resetQuizModal();
             quizModal.classList.remove('hidden');
-            quizLoading.classList.remove('hidden');
             
             try {
                 const response = await fetchFromBackend('/api/quiz', { chapterId: chapterId });
 
                 if (response.data && response.data.length > 0) {
                     buildQuizForm(response.data);
-                    quizLoading.classList.add('hidden');
+                    quizLoading.style.display = 'none'; // Ẩn loading
                     quizForm.classList.remove('hidden');
                     submitBtn.classList.remove('hidden');
                 } else {
@@ -218,10 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         if (startBtn) {
-            startBtn.addEventListener('click', handleStartQuiz); // Gắn sự kiện cho nút đầu
-        }
-        if (startBtnBottom) {
-            startBtnBottom.addEventListener('click', handleStartQuiz); // Gắn sự kiện cho nút cuối
+            startBtn.addEventListener('click', handleStartQuiz);
         }
 
         if (closeQuizBtn) {
@@ -242,6 +241,117 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- LOGIC MỚI CHO BÀI TẬP VẬN DỤNG ---
+    const practiceModal = document.getElementById('practice-modal');
+    if (practiceModal) {
+        const startPracticeBtn = document.getElementById('start-practice-btn'); // Nút ở cuối trang chapter
+        const closePracticeBtn = document.getElementById('close-practice-btn');
+        const submitPracticeBtn = document.getElementById('submit-practice-btn');
+        const retakePracticeBtn = document.getElementById('retake-practice-btn');
+
+        const practiceLoading = document.getElementById('practice-loading');
+        const practiceContent = document.getElementById('practice-content');
+        const practiceProblem = document.getElementById('practice-problem');
+        const practiceAnswer = document.getElementById('practice-answer');
+        const practiceFeedback = document.getElementById('practice-feedback');
+        
+        let currentPracticeProblem = {}; // Lưu đề bài AI tạo ra
+
+        function resetPracticeModal() {
+            practiceLoading.style.display = 'flex';
+            practiceContent.classList.add('hidden');
+            practiceFeedback.classList.add('hidden');
+            submitPracticeBtn.classList.add('hidden');
+            retakePracticeBtn.classList.add('hidden');
+            practiceAnswer.value = '';
+            currentPracticeProblem = {};
+        }
+
+        const handleStartPractice = async (e) => {
+            e.preventDefault();
+            const chapterId = e.currentTarget.dataset.chapterId;
+            const chapterTitle = e.currentTarget.dataset.chapterTitle;
+
+            document.getElementById('practice-title').textContent = `Bài tập Vận dụng: ${chapterTitle}`;
+            resetPracticeModal();
+            practiceModal.classList.remove('hidden');
+
+            try {
+                const response = await fetchFromBackend('/api/practice_exercise', { 
+                    action: 'get_problem',
+                    chapterId: chapterId 
+                });
+
+                if (response.data) {
+                    currentPracticeProblem = response.data; // Lưu đề bài
+                    practiceProblem.innerHTML = `
+                        <strong>Tình huống:</strong>
+                        <p>${escapeHTML(response.data.tinh_huong)}</p>
+                        <strong>Dữ liệu mô phỏng (Mocking Dataset):</strong>
+                        <pre>${escapeHTML(response.data.du_lieu_mo_phong)}</pre>
+                        <strong>Yêu cầu:</strong>
+                        <p class="font-semibold">${escapeHTML(response.data.cau_hoi)}</p>
+                    `;
+                    practiceLoading.style.display = 'none';
+                    practiceContent.classList.remove('hidden');
+                    submitPracticeBtn.classList.remove('hidden');
+                } else {
+                    throw new Error(response.error || 'Không nhận được dữ liệu bài tập từ AI.');
+                }
+            } catch (error) {
+                console.error('Lỗi khi gọi API Bài tập Vận dụng:', error);
+                practiceLoading.innerHTML = `<p class="text-red-600 text-center">Lỗi: ${error.message}</p>`;
+            }
+        };
+        
+        if (startPracticeBtn) {
+            startPracticeBtn.addEventListener('click', handleStartPractice);
+        }
+
+        if (closePracticeBtn) {
+            closePracticeBtn.addEventListener('click', () => {
+                practiceModal.classList.add('hidden');
+            });
+        }
+
+        if (submitPracticeBtn) {
+            submitPracticeBtn.addEventListener('click', async () => {
+                const userAnswer = practiceAnswer.value.trim();
+                if (userAnswer.length < 5) {
+                    alert("Vui lòng diễn giải câu trả lời của bạn chi tiết hơn.");
+                    return;
+                }
+
+                practiceFeedback.innerHTML = '<p class="text-gray-500">AI đang chấm bài và đưa ra phản hồi...</p>';
+                practiceFeedback.classList.remove('hidden');
+                submitPracticeBtn.classList.add('hidden');
+
+                const response = await fetchFromBackend('/api/practice_exercise', { 
+                    action: 'submit_feedback',
+                    chapterId: startPracticeBtn.dataset.chapterId, // Lấy ID từ nút gốc
+                    problem: currentPracticeProblem,
+                    user_answer: userAnswer
+                });
+
+                if (response.text) {
+                    displayAIResponse(practiceFeedback, response.text);
+                } else {
+                    displayAIResponse(practiceFeedback, `<p class="text-red-600">Lỗi khi nhận phản hồi: ${response.error}</p>`);
+                }
+                retakePracticeBtn.classList.remove('hidden');
+            });
+        }
+        
+        if (retakePracticeBtn) {
+            retakePracticeBtn.addEventListener('click', () => {
+                resetPracticeModal();
+                if (startPracticeBtn) startPracticeBtn.click(); // Tải bài tập mới
+            });
+        }
+    }
+
+    // --- CÁC LOGIC KHÁC (Proposal, Tools, Assistant, Ethics) ---
+    
     const proposalResponseEl = document.getElementById('proposal-ai-response');
     if (proposalResponseEl) {
         document.querySelectorAll('.btn-proposal-ai').forEach(button => {
@@ -300,10 +410,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
         
-        const firstTabContent = document.querySelector('.tool-tab-content');
+        const firstTabContent = document.querySelector('.tool-tab-content.active');
         if (firstTabContent) {
             firstTabContent.classList.remove('hidden');
-            firstTabContent.classList.add('active');
+        } else if (document.querySelector('.tool-tab-content')) {
+            // Nếu không có tab nào active, active tab đầu tiên
+             document.querySelector('.tool-tab-button')?.classList.add('tab-active');
+             document.querySelector('.tool-tab-button')?.classList.remove('tab-inactive');
+             document.querySelector('.tool-tab-content')?.classList.add('active');
+             document.querySelector('.tool-tab-content')?.classList.remove('hidden');
         }
     
         const btnAdvisor = document.getElementById('btn-run-advisor');

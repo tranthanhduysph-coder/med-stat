@@ -5,11 +5,15 @@
 <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
     <div class="lg:grid lg:grid-cols-3 lg:gap-8">
         
+        <!-- Cột Nội dung (2/3) -->
         <div class="lg:col-span-2 bg-white p-6 sm:p-8 rounded-lg shadow-md">
+            <!-- Header bài học -->
             <div class="mb-6">
                 <h1 class="text-3xl font-bold text-gray-900">{{ content.title }}</h1>
                 
+                <!-- Nút Tải tài liệu & Tự lượng giá -->
                 <div class="flex flex-col sm:flex-row gap-4 mt-6">
+                    <!-- Nút Tải tài liệu -->
                     {% if download_url %}
                     <a href="{{ download_url }}" target="_blank" class="flex-1 inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
                         <i class='bx bxs-cloud-download mr-2'></i>
@@ -17,13 +21,15 @@
                     </a>
                     {% endif %}
                     
-                    <button id="start-quiz-btn" data-chapter-id="{{ content.id }}" class="flex-1 inline-flex items-center justify-center px-5 py-3 border border-blue-600 text-base font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200">
+                    <!-- Nút Tự lượng giá (Trắc nghiệm) -->
+                    <button id="start-quiz-btn" data-chapter-id="{{ content.id }}" data-chapter-title="{{ content.title }}" class="flex-1 inline-flex items-center justify-center px-5 py-3 border border-blue-600 text-base font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200">
                         <i class='bx bxs-file-find mr-2'></i>
-                        Bắt đầu Tự lượng giá (AI)
+                        Tự lượng giá (Trắc nghiệm)
                     </button>
                 </div>
             </div>
 
+            <!-- Video (nếu có) -->
             {% if content.video_url and content.video_url != "https://www.youtube.com/embed/placeholder" %}
             <div class="mb-8">
                 <div class="aspect-w-16 aspect-h-9">
@@ -37,17 +43,21 @@
             </div>
             {% endif %}
 
+            <!-- Nội dung chi tiết (ĐÃ SỬA LỖI ĐƯỜNG DẪN) -->
             <div class="prose max-w-none">
+                <!-- Dòng này sẽ tìm file (ví dụ: 'chapter_1.html') trong thư mục templates/ -->
                 {% include content.content_file %}
             </div>
 
+            <!-- NÚT MỚI: Bài tập Vận dụng -->
             <div class="mt-10 pt-6 border-t">
-                <button id="start-quiz-btn-bottom" data-chapter-id="{{ content.id }}" class="w-full flex items-center justify-center bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
-                    <i class='bx bxs-file-find mr-2 text-xl'></i>Bắt đầu Tự lượng giá (AI)
+                <button id="start-practice-btn" data-chapter-id="{{ content.id }}" data-chapter-title="{{ content.title }}" class="w-full flex items-center justify-center bg-teal-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-teal-700 transition duration-300">
+                    <i class='bx bxs-keyboard mr-2 text-xl'></i>Bài tập Vận dụng (AI)
                 </button>
             </div>
         </div>
 
+        <!-- Cột bên phải (có thể để trống hoặc thêm sau) -->
         <div class="lg:col-span-1 mt-8 lg:mt-0">
             <div class="bg-white p-6 rounded-lg shadow-md sticky top-24">
                 <h3 class="text-xl font-semibold text-gray-800 mb-4">Thông tin thêm</h3>

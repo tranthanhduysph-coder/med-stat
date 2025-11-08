@@ -4,7 +4,6 @@ import requests
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv 
 
-# Tải biến môi trường (RẤT QUAN TRỌNG, phải ở ngay đầu)
 load_dotenv() 
 
 app = Flask(__name__)
@@ -13,7 +12,7 @@ app = Flask(__name__)
 API_KEY = os.environ.get("GEMINI_API_KEY", "") 
 GEMINI_API_URL_BASE = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent"
 
-# --- NỘI DUNG KHÓA HỌC (ĐÃ TÁCH RA) ---
+# --- NỘI DUNG KHÓA HỌC (ĐÃ SỬA LỖI ĐƯỜNG DẪN) ---
 COURSE_MODULES = {
     "module1-3": {
         "title": "Module 1-3: Nền tảng NCKH",
@@ -170,6 +169,63 @@ def api_quiz():
     }
     response, status_code = _call_gemini_api(user_query, system_prompt, json_schema=QUIZ_SCHEMA)
     return jsonify(response), status_code
+
+# --- API MỚI CHO BÀI TẬP VẬN DỤNG ---
+@app.route("/api/practice_exercise", methods=["POST"])
+def api_practice_exercise():
+    data = request.json
+    action = data.get("action")
+    chapter_id = data.get("chapterId", "1")
+    
+    chapter_title = "chung"
+    for module in COURSE_MODULES.values():
+        if chapter_id in module["chapters"]:
+            chapter_title = module["chapters"][chapter_id]["title"]
+            break
+
+    if action == "get_problem":
+        # AI tạo đề bài (dùng JSON Mode)
+        system_prompt = f"Bạn là giảng viên Thống kê Y học (Chương 10, 11). Hãy tạo một bài tập VẬN DỤNG duy nhất về chủ đề '{chapter_title}'. Bài tập phải đa dạng. Cung cấp một tình huống lâm sàng ngắn gọn, một bộ dữ liệu mô phỏng (khoảng 5-10 đối tượng, đủ để chạy kiểm định), và một câu hỏi yêu cầu sinh viên diễn giải kết quả (ví dụ: p-value, kết luận H0/H1, diễn giải lâm sàng). Tuân thủ JSON schema."
+        user_query = f"Tạo một bài tập vận dụng SPSS về {chapter_title}."
+        
+        PROBLEM_SCHEMA = {
+            "type": "OBJECT",
+            "properties": {
+                "tinh_huong": { "type": "STRING" },
+                "du_lieu_mo_phong": { "type": "STRING" },
+                "cau_hoi": { "type": "STRING" },
+                "dap_an_mau": { "type": "STRING" }
+            },
+            "required": ["tinh_huong", "du_lieu_mo_phong", "cau_hoi", "dap_an_mau"]
+        }
+        
+        response, status_code = _call_gemini_api(user_query, system_prompt, json_schema=PROBLEM_SCHEMA)
+        return jsonify(response), status_code
+
+    elif action == "submit_feedback":
+        # AI chấm bài và sửa lỗi
+        problem = data.get("problem", {})
+        user_answer = data.get("user_answer", "")
+        
+        system_prompt = f"Bạn là giảng viên SPSS (Chương 10, 11). Một sinh viên đang làm bài tập về '{chapter_title}'. Dưới đây là đề bài, đáp án đúng (để bạn tham khảo), và câu trả lời của sinh viên. Hãy nhận xét, sửa lỗi, và hướng dẫn họ. Trả lời trực tiếp, thân thiện, và tập trung vào việc giúp họ hiểu tại sao họ đúng hoặc sai (ví dụ: 'Bạn kết luận đúng rồi, vì p < 0.05...')."
+        user_query = f"""
+        Đề bài:
+        - Tình huống: {problem.get('tinh_huong')}
+        - Dữ liệu: {problem.get('du_lieu_mo_phong')}
+        - Câu hỏi: {problem.get('cau_hoi')}
+        - Đáp án mẫu (để bạn tham khảo): {problem.get('dap_an_mau')}
+
+        Câu trả lời của sinh viên:
+        "{user_answer}"
+        
+        Hãy đưa ra phản hồi của bạn.
+        """
+        
+        response, status_code = _call_gemini_api(user_query, system_prompt)
+        return jsonify(response), status_code
+    
+    return jsonify({"error": "Hành động không hợp lệ"}), 400
+# --- KẾT THÚC API MỚI ---
 
 @app.route("/api/proposal", methods=["POST"])
 def api_proposal():
